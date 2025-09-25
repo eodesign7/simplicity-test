@@ -1,62 +1,68 @@
-# TODOS – One-to-One Version
+# TODOS – Spiced-Up Version 🚀
 
-## Setup
+## 🎯 Phase 1: Enhanced Foundation
+- [X] ✅ **One-to-One Version Complete** - Základný funkcionalný systém
+- [ ] 🔧 **Database Integration** - Prípojenie na PostgreSQL/MongoDB
+- [ ] 🔐 **Authentication System** - User login/register s JWT
+- [ ] 🎨 **Advanced UI Components** - Shadcn/ui komponenty
+- [ ] 📱 **Responsive Design** - Mobile-first prístup
+- [ ] 🌙 **Dark Mode** - Theme switching
 
-- [x] Inicializovať projekt cez `pnpm create vite@latest`
-- [x] Pridať TypeScript template
-- [x] Pridať TailwindCSS + základnú konfiguráciu
-- [x] Pridať React Router (basic setup)
-- [x] Pridať react-table
-- [x] Pridať react-hook-form a react-select
+## 🎯 Phase 2: Real CRUD Operations
+- [ ] ✏️ **True Edit Mode** - Aktualizácia existujúcich záznamov
+- [ ] 🗑️ **Delete Functionality** - Soft delete s confirmation
+- [ ] 📊 **Advanced Filtering** - Filter by category, date range, status
+- [ ] 🔍 **Search System** - Full-text search v title/content
+- [ ] 📄 **Pagination** - Load more / infinite scroll
+- [ ] 📈 **Sorting Options** - Multiple sort criteria
 
-## Layout / Base Components
+## 🎯 Phase 3: User Experience
+- [ ] 👤 **User Profiles** - Personal dashboard
+- [ ] 🔔 **Real-time Notifications** - WebSocket/Socket.io
+- [ ] 📋 **Draft System** - Save as draft functionality
+- [ ] 🏷️ **Tag Management** - Custom tags + categories
+- [ ] 📎 **File Attachments** - Upload images/documents
+- [ ] 📅 **Scheduling** - Publish at specific time
 
-- [x] Vytvoriť jednoduchý layout s headerom + sidebarom
-- [x] Pridať link na stránku s tabuľkou oznamov
+## 🎯 Phase 4: Advanced Features
+- [ ] 📊 **Analytics Dashboard** - Views, engagement metrics
+- [ ] 🔄 **Version History** - Track changes over time
+- [ ] 👥 **Multi-user Support** - Role-based permissions
+- [ ] 🎯 **Targeting** - Audience segmentation
+- [ ] 📧 **Email Integration** - Send announcements via email
+- [ ] 🔗 **API Endpoints** - RESTful API for external access
 
-## Table
+## 🎯 Phase 5: Performance & Scale
+- [ ] ⚡ **Caching Strategy** - Redis/Memcached
+- [ ] 🖼️ **Image Optimization** - WebP, lazy loading
+- [ ] 📦 **Code Splitting** - Dynamic imports
+- [ ] 🚀 **CDN Integration** - Static asset delivery
+- [ ] 📊 **Monitoring** - Error tracking, performance metrics
+- [ ] 🧪 **Testing Suite** - Unit, integration, e2e tests
 
-- [x] Pridať komponentu pre tabuľku oznamov
-- [x] Mocknúť dáta (title, publication date, last update, categories)
-- [x] Implementovať zoradenie podľa last update
+## 🎯 Phase 6: Production Ready
+- [ ] 🐳 **Docker Containerization** - Multi-stage builds
+- [ ] ☁️ **CI/CD Pipeline** - GitHub Actions
+- [ ] 🔒 **Security Hardening** - Rate limiting, CORS, CSP
+- [ ] 📋 **Documentation** - API docs, user guides
+- [ ] 🌍 **Internationalization** - Multi-language support
+- [ ] 📱 **PWA Features** - Offline support, push notifications
 
-## Detail / Edit Page
+## 🛠 Tech Stack Evolution
+- **Frontend**: React 18 + TypeScript + TailwindCSS + Shadcn/ui
+- **Backend**: Node.js + Express/Fastify + Prisma
+- **Database**: PostgreSQL + Redis
+- **Authentication**: NextAuth.js / Auth0
+- **Real-time**: Socket.io / WebSocket
+- **File Storage**: AWS S3 / Cloudinary
+- **Deployment**: Docker + AWS/GCP/Vercel
 
-- [x] Vytvoriť route `/announcements/:id`
-- [x] Pridať formulár s text inputmi a multiselectom
-- [x] Validovať vstupy (MM/DD/YYYY HH:mm)
-- [x] Implementovať "Publish" button
-- [x] Zobraziť alert box ak chýbajú hodnoty (toast notifikácie)
-- [x] Mock update dát a redirect späť na tabuľku
+## 📋 Current Sprint Focus
+**Sprint 1**: Database Integration + Authentication
+- [ ] Setup PostgreSQL database
+- [ ] Prisma ORM integration
+- [ ] User authentication system
+- [ ] Basic CRUD with database
+- [ ] Environment configuration
 
-## Data Handling
-
-- [x] Pouzit mock-data pre simulaciu
-- [x] CRUD Operations - zo zadania vypliva iba "Create" po "Publish", nie editacia
-- [x] Vytvorenie zaznamu dat v mock-data.ts subore
-- [x] "Po kliku na publish button prebehne validácia či sú hodnoty zadané, všetky sú povinné. - Ak chýba niektorá z hodnôt zobrazí sa alert box s chybovou hláškou.- Ak validácia prebehla úspešne, vytvorí sa nový oznam a uloží sa ako nový záznam, následne sa zobrazí hlavná stránka s tabuľkou oznamov.- V prípade upravovania existujúuceho oznamu sú hodnoty predvyplnené z daného oznamu. - Priamo zo zadania"
-
-## Code Optimization & Refactoring
-
-- [X] Centralizácia typov a schem
-- [X] Dekompozícia komponentov (separation of concerns)
-- [X] Zmenšenie codelength - žiadne spaghetti kód
-- [X] Zjednodušenie kódu
-- [X] Optimalizácia importov a exportov
-- [X] Refaktoring veľkých komponentov na menšie
-- [X] Vytvorenie custom hooks pre logiku
-- [X] Separácia business logiky od UI komponentov
-
-## Testing & Quality
-
-- [X] Testovať lint (ESLint)
-- [X] Testovať TypeScript types
-- [X] Testovať build proces
-- [X] Kontrola bundle size
-- [X] Performance optimalizácia
-
-## Finalization
-
-- [x] README s návodom na spustenie
-- [X] .gitignore
-- [X] Deploy na Render alebo Netlify
+**Next**: Advanced UI Components + Real-time Features
