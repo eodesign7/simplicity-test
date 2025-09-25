@@ -1,18 +1,20 @@
 import { Link } from "react-router";
-import { mockAnnouncements } from "../data/mockAnnouncements";
+import { loadAnnouncements } from "../../lib/storage";
 
 export function AnnouncementsTable() {
+  const announcements = loadAnnouncements();
+
   return (
     <div className="bg-white p-6">
-      <h1 className="text-2xl font-bold text-neutral-900 mb-20">
-        Announcements
-      </h1>
+      <div className="flex justify-start items-center mb-20">
+        <h1 className="text-2xl font-bold text-neutral-900">Announcements</h1>
+      </div>
 
       <div className="">
         <table className="w-full border-neutral-200 border-y">
           <thead>
             <tr className="border-b border-neutral-300">
-              <th className="text-center py-3 px-4 font-bold text-neutral-700">
+              <th className="text-left py-3 pl-12 pr-4 font-bold text-neutral-700">
                 Title
               </th>
               <th className="text-left py-3 px-4 font-bold text-neutral-700">
@@ -24,16 +26,16 @@ export function AnnouncementsTable() {
               <th className="text-left py-3 px-4 font-bold text-neutral-700">
                 Categories
               </th>
-              <th className="text-center py-3 px-4 font-bold text-neutral-700"></th>
+              <th className="text-left py-3 px-4 font-bold text-neutral-700"></th>
             </tr>
           </thead>
           <tbody>
-            {mockAnnouncements.map((announcement) => (
+            {announcements.map((announcement) => (
               <tr
                 key={announcement.id}
                 className="border-b border-neutral-300 hover:bg-neutral-50"
               >
-                <td className="py-3 px-4 text-neutral-900 text-center">
+                <td className="py-3 pl-12 pr-4 text-neutral-900 text-left">
                   {announcement.title}
                 </td>
                 <td className="py-3 px-4 text-neutral-600 text-left">
@@ -45,7 +47,7 @@ export function AnnouncementsTable() {
                 <td className="py-3 px-4 text-neutral-600 text-left">
                   {announcement.categories.join(", ")}
                 </td>
-                <td className="py-3 px-4">
+                <td className="py-3 pl-4 pr-2">
                   <Link
                     to={`/announcements/${announcement.id}`}
                     className="text-neutral-500 hover:text-neutral-700 transition-colors"

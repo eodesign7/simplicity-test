@@ -6,11 +6,8 @@ import { z } from "zod";
 import toast from "react-hot-toast";
 import type { Route } from "./+types/announcements.$id";
 import { Layout } from "../components/Layout";
-import {
-  getAnnouncementById,
-  updateAnnouncement,
-  availableCategories,
-} from "../data/mockAnnouncements";
+import { getAnnouncementById, createAnnouncement } from "../../lib/storage";
+import { availableCategories } from "../../lib/mock-data";
 
 // Zod validation schema
 const announcementSchema = z.object({
@@ -36,10 +33,12 @@ export default function AnnouncementDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [announcement, setAnnouncement] = useState(
-    getAnnouncementById(Number(id))
+    id ? getAnnouncementById(String(id)) : null
   );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const isNewAnnouncement = !id || id === "new";
 
   const {
     register,
@@ -53,7 +52,18 @@ export default function AnnouncementDetail() {
       title: announcement?.title || "",
       content: announcement?.content || "",
       categories: announcement?.categories || [],
-      publicationDate: announcement?.publicationDate || "",
+      publicationDate:
+        announcement?.publicationDate ||
+        new Date()
+          .toLocaleString("en-US", {
+            month: "2-digit",
+            day: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          })
+          .replace(/(\d+)\/(\d+)\/(\d+),?\s*(\d+):(\d+)/, "$1/$2/$3 $4:$5"),
     },
   });
 
@@ -96,28 +106,32 @@ export default function AnnouncementDetail() {
 
   const onSubmit = async (data: AnnouncementFormData) => {
     try {
-      if (announcement) {
-        updateAnnouncement(announcement.id, {
-          ...data,
-          lastUpdate: new Date().toLocaleDateString("en-US", {
-            month: "short",
-            day: "2-digit",
-            year: "numeric",
-          }),
-        });
+      const currentDate = new Date().toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      });
 
-        toast.success("Announcement updated successfully!");
-        navigate("/announcements");
-      }
+      // Vždy vytvorí NOVÝ záznam (podľa zadania)
+      const newAnnouncement = createAnnouncement({
+        title: data.title,
+        content: data.content,
+        categories: data.categories,
+        publicationDate: data.publicationDate,
+        lastUpdate: currentDate,
+      });
+
+      toast.success("Announcement published successfully!");
+      navigate("/announcements");
     } catch (error) {
-      toast.error("Failed to update announcement");
+      toast.error("Failed to publish announcement");
     }
   };
 
-  if (!announcement) {
+  if (!isNewAnnouncement && !announcement) {
     return (
       <Layout>
-        <div className="bg-white p-6">
+        <div className="bg-white p-6 w-full max-w-2xl mx-auto">
           <h1 className="text-2xl font-bold text-neutral-900 mb-6">
             Announcement not found
           </h1>
@@ -130,7 +144,9 @@ export default function AnnouncementDetail() {
     <Layout>
       <div className="bg-white p-6 w-full max-w-2xl mx-auto">
         <h1 className="text-2xl font-bold text-neutral-900 mb-8">
-          Edit the announcement
+          {isNewAnnouncement
+            ? "Create new announcement"
+            : "Edit the announcement"}
         </h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -146,7 +162,7 @@ export default function AnnouncementDetail() {
               id="title"
               type="text"
               {...register("title")}
-              className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder:text-neutral-600 text-neutral-600"
+              className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder:text-neutral-600 text-neutral-600 focus:text-neutral-900"
               placeholder="Enter announcement title"
             />
             {errors.title && (
@@ -168,7 +184,7 @@ export default function AnnouncementDetail() {
               id="content"
               rows={4}
               {...register("content")}
-              className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder:text-neutral-600 text-neutral-600"
+              className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder:text-neutral-600 text-neutral-600 focus:text-neutral-900"
               placeholder="Enter announcement content"
             />
             {errors.content && (
@@ -274,7 +290,7 @@ export default function AnnouncementDetail() {
               type="text"
               {...register("publicationDate")}
               placeholder="MM/DD/YYYY HH:mm"
-              className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder:text-neutral-600 text-neutral-600"
+              className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder:text-neutral-600 text-neutral-600 focus:text-neutral-900"
             />
             {errors.publicationDate && (
               <p className="mt-1 text-sm text-red-600">

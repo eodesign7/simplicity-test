@@ -22,15 +22,41 @@
 
 ## Detail / Edit Page
 
-- [ ] Vytvoriť route `/announcements/:id`
-- [ ] Pridať formulár s text inputmi a multiselectom
-- [ ] Validovať vstupy (MM/DD/YYYY HH:mm)
-- [ ] Implementovať "Publish" button
-- [ ] Zobraziť alert box ak chýbajú hodnoty
-- [ ] Mock update dát a redirect späť na tabuľku
+- [x] Vytvoriť route `/announcements/:id`
+- [x] Pridať formulár s text inputmi a multiselectom
+- [x] Validovať vstupy (MM/DD/YYYY HH:mm)
+- [x] Implementovať "Publish" button
+- [x] Zobraziť alert box ak chýbajú hodnoty (toast notifikácie)
+- [x] Mock update dát a redirect späť na tabuľku
+
+## Data Handling
+
+- [x] Pouzit mock-data pre simulaciu
+- [x] CRUD Operations - zo zadania vypliva iba "Create" po "Publish", nie editacia
+- [x] Vytvorenie zaznamu dat v mock-data.ts subore
+- [x] "Po kliku na publish button prebehne validácia či sú hodnoty zadané, všetky sú povinné. - Ak chýba niektorá z hodnôt zobrazí sa alert box s chybovou hláškou.- Ak validácia prebehla úspešne, vytvorí sa nový oznam a uloží sa ako nový záznam, následne sa zobrazí hlavná stránka s tabuľkou oznamov.- V prípade upravovania existujúuceho oznamu sú hodnoty predvyplnené z daného oznamu. - Priamo zo zadania"
+
+## Code Optimization & Refactoring
+
+- [ ] Centralizácia typov a schem
+- [ ] Dekompozícia komponentov (separation of concerns)
+- [ ] Zmenšenie codelength - žiadne spaghetti kód
+- [ ] Zjednodušenie kódu
+- [ ] Optimalizácia importov a exportov
+- [ ] Refaktoring veľkých komponentov na menšie
+- [ ] Vytvorenie custom hooks pre logiku
+- [ ] Separácia business logiky od UI komponentov
+
+## Testing & Quality
+
+- [ ] Testovať lint (ESLint)
+- [ ] Testovať TypeScript types
+- [ ] Testovať build proces
+- [ ] Kontrola bundle size
+- [ ] Performance optimalizácia
 
 ## Finalization
 
-- [ ] README s návodom na spustenie
+- [x] README s návodom na spustenie
 - [ ] .gitignore
 - [ ] Deploy na Render alebo Netlify

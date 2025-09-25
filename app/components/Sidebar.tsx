@@ -5,7 +5,7 @@ export function Sidebar() {
   const pathname = location.pathname;
 
   return (
-    <aside className="w-64 bg-light-gray h-full">
+    <aside className="w-64 bg-light-gray fixed e left-0 inset-y-0">
       {/* Sidebar header */}
       <div className="p-4 flex items-center gap-2">
         <Link

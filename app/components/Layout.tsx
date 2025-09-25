@@ -9,9 +9,9 @@ export function Layout({ children }: LayoutProps) {
   return (
     <div className="flex  h-screen bg-white">
       <Sidebar />
-      <div className="flex flex-col flex-1 min-h-0">
+      <div className="ml-64 flex flex-col flex-1 min-h-0">
         <Header />
-        <main className="flex-1 overflow-auto min-h-full">{children}</main>
+        <main className="flex-1 overflow-auto h-full scrollbar-hide">{children}</main>
       </div>
     </div>
   );
