@@ -38,25 +38,25 @@
 
 ## Code Optimization & Refactoring
 
-- [ ] Centralizácia typov a schem
-- [ ] Dekompozícia komponentov (separation of concerns)
-- [ ] Zmenšenie codelength - žiadne spaghetti kód
-- [ ] Zjednodušenie kódu
-- [ ] Optimalizácia importov a exportov
-- [ ] Refaktoring veľkých komponentov na menšie
-- [ ] Vytvorenie custom hooks pre logiku
-- [ ] Separácia business logiky od UI komponentov
+- [X] Centralizácia typov a schem
+- [X] Dekompozícia komponentov (separation of concerns)
+- [X] Zmenšenie codelength - žiadne spaghetti kód
+- [X] Zjednodušenie kódu
+- [X] Optimalizácia importov a exportov
+- [X] Refaktoring veľkých komponentov na menšie
+- [X] Vytvorenie custom hooks pre logiku
+- [X] Separácia business logiky od UI komponentov
 
 ## Testing & Quality
 
-- [ ] Testovať lint (ESLint)
-- [ ] Testovať TypeScript types
-- [ ] Testovať build proces
-- [ ] Kontrola bundle size
-- [ ] Performance optimalizácia
+- [X] Testovať lint (ESLint)
+- [X] Testovať TypeScript types
+- [X] Testovať build proces
+- [X] Kontrola bundle size
+- [X] Performance optimalizácia
 
 ## Finalization
 
 - [x] README s návodom na spustenie
-- [ ] .gitignore
-- [ ] Deploy na Render alebo Netlify
+- [X] .gitignore
+- [X] Deploy na Render alebo Netlify

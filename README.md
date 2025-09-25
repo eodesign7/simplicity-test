@@ -2,6 +2,9 @@
 
 Jednoduchý dashboard pre správu oznamov vytvorený ako testovacie zadanie.
 
+Projekt najdes na: https://simplicity-test.onrender.com/
+Zdrojovy kod: https://github.com/eodesign7/simplicity-test
+
 ## 🚀 Spustenie projektu
 
 ```bash
@@ -127,18 +130,4 @@ location.reload();
 - **TailwindCSS** - utility-first CSS framework
 - **1:1 design** - presne podľa poskytnutých mockupov
 
-## 📋 Stav projektu
 
-Všetky úlohy z `docs/TODOS.md` sú dokončené:
-
-- ✅ Setup a konfigurácia
-- ✅ Layout a komponenty
-- ✅ Tabuľka oznamov
-- ✅ Detail/Edit stránka
-- ✅ Data Handling (Local Storage + Mock Data)
-- ✅ Validácia a notifikácie
-
-Zostáva len finálne úpravy:
-
-- [ ] .gitignore
-- [ ] Deploy na Render/Netlify
