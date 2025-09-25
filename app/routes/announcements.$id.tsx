@@ -18,14 +18,11 @@ export default function AnnouncementDetail() {
   return (
     <Layout>
       <div className="bg-white p-6">
-        <h1 className="text-2xl font-bold text-black mb-6">
+        <h1 className="text-2xl font-bold text-neutral-900 mb-6">
           Announcement Detail
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 mb-4">
+        <p className="text-neutral-600 mb-4">
           Detail page for announcement with ID: <strong>{id}</strong>
-        </p>
-        <p className="text-gray-500 dark:text-gray-500">
-          Form and edit functionality will be implemented here
         </p>
       </div>
     </Layout>

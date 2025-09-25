@@ -2,23 +2,23 @@
 
 ## Setup
 
-- [X] Inicializovať projekt cez `pnpm create vite@latest`
-- [X] Pridať TypeScript template
-- [X] Pridať TailwindCSS + základnú konfiguráciu
-- [ ] Pridať React Router (basic setup)
-- [X] Pridať react-table
-- [X] Pridať react-hook-form a react-select
+- [x] Inicializovať projekt cez `pnpm create vite@latest`
+- [x] Pridať TypeScript template
+- [x] Pridať TailwindCSS + základnú konfiguráciu
+- [x] Pridať React Router (basic setup)
+- [x] Pridať react-table
+- [x] Pridať react-hook-form a react-select
 
 ## Layout / Base Components
 
-- [ ] Vytvoriť jednoduchý layout s headerom + sidebarom
-- [ ] Pridať link na stránku s tabuľkou oznamov
+- [x] Vytvoriť jednoduchý layout s headerom + sidebarom
+- [x] Pridať link na stránku s tabuľkou oznamov
 
 ## Table
 
-- [ ] Pridať komponentu pre tabuľku oznamov
-- [ ] Mocknúť dáta (title, publication date, last update, categories)
-- [ ] Implementovať zoradenie podľa last update
+- [x] Pridať komponentu pre tabuľku oznamov
+- [x] Mocknúť dáta (title, publication date, last update, categories)
+- [x] Implementovať zoradenie podľa last update
 
 ## Detail / Edit Page
 

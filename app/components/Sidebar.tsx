@@ -10,7 +10,7 @@ export function Sidebar() {
       <div className="p-4 flex items-center gap-2">
         <Link
           to="/"
-          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+          className="flex px-2 items-center gap-2 hover:opacity-80 transition-opacity"
         >
           <img
             src="/logo.png"
@@ -22,7 +22,7 @@ export function Sidebar() {
       </div>
 
       {/* Sidebar navigation */}
-      <nav className="p-4">
+      <nav className="px-4">
         <ul className="space-y-2">
           <li>
             <Link
