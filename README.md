@@ -1,11 +1,54 @@
-# Announcements Dashboard
+# Announcements Dashboard 🚀
 
-Jednoduchý dashboard pre správu oznamov vytvorený ako testovacie zadanie.
+**Profesionálny dashboard pre správu oznamov** - od jednoduchého testovacieho zadania po plnohodnotnú aplikáciu.
 
-Projekt najdes na: https://simplicity-test.onrender.com/
-Zdrojovy kod: https://github.com/eodesign7/simplicity-test
+## 🌐 Live Demo
 
-## 🚀 Spustenie projektu
+- **One-to-One Version** → [https://simplicity-test.onrender.com](https://simplicity-test.onrender.com)
+- **Spiced-Up Version** → *Coming Soon* (main branch)
+- **Source Code** → [https://github.com/eodesign7/simplicity-test](https://github.com/eodesign7/simplicity-test)
+
+---
+
+## 🎯 Project Phases
+
+### ✅ **Phase 1: One-to-One (COMPLETED)**
+Striktne podľa testovacieho zadania:
+- Tabuľka oznamov s mock dátami
+- Form validácia s Zod
+- Local Storage perzistencia
+- Custom UI komponenty
+- Toast notifikácie
+
+### 🚀 **Phase 2: Spiced-Up (IN PROGRESS)**
+Profesionálna verzia s pokročilými funkciami:
+- Database integration (PostgreSQL)
+- User authentication (JWT)
+- Real-time features (Socket.io)
+- Advanced UI (Shadcn/ui)
+- Analytics dashboard
+- Mobile PWA
+
+---
+
+## 🛠 Tech Stack Evolution
+
+### **Current (One-to-One)**
+- **React + Vite** + **TypeScript**
+- **TailwindCSS** + **React Router**
+- **react-hook-form** + **Zod** + **react-hot-toast**
+- **Local Storage** (mock data fallback)
+
+### **Next (Spiced-Up)**
+- **React 18** + **TypeScript** + **TailwindCSS**
+- **Shadcn/ui** + **Framer Motion**
+- **Node.js** + **Express** + **Prisma ORM**
+- **PostgreSQL** + **Redis** + **JWT**
+- **Socket.io** + **AWS S3**
+
+---
+
+## 🏗 Project Setup
 
 ```bash
 # Inštalácia závislostí
