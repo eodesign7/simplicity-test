@@ -5,7 +5,7 @@
 ## 🌐 Live Demo
 
 - **One-to-One Version** → [https://simplicity-test.onrender.com](https://simplicity-test.onrender.com)
-- **Spiced-Up Version** → *Coming Soon* (main branch)
+- **Spiced-Up Version** → _Coming Soon_ (main branch)
 - **Source Code** → [https://github.com/eodesign7/simplicity-test](https://github.com/eodesign7/simplicity-test)
 
 ---
@@ -13,7 +13,9 @@
 ## 🎯 Project Phases
 
 ### ✅ **Phase 1: One-to-One (COMPLETED)**
+
 Striktne podľa testovacieho zadania:
+
 - Tabuľka oznamov s mock dátami
 - Form validácia s Zod
 - Local Storage perzistencia
@@ -21,7 +23,9 @@ Striktne podľa testovacieho zadania:
 - Toast notifikácie
 
 ### 🚀 **Phase 2: Spiced-Up (IN PROGRESS)**
+
 Profesionálna verzia s pokročilými funkciami:
+
 - Database integration (PostgreSQL)
 - User authentication (JWT)
 - Real-time features (Socket.io)
@@ -34,12 +38,14 @@ Profesionálna verzia s pokročilými funkciami:
 ## 🛠 Tech Stack Evolution
 
 ### **Current (One-to-One)**
+
 - **React + Vite** + **TypeScript**
 - **TailwindCSS** + **React Router**
 - **react-hook-form** + **Zod** + **react-hot-toast**
 - **Local Storage** (mock data fallback)
 
 ### **Next (Spiced-Up)**
+
 - **React 18** + **TypeScript** + **TailwindCSS**
 - **Shadcn/ui** + **Framer Motion**
 - **Node.js** + **Express** + **Prisma ORM**
@@ -172,5 +178,3 @@ location.reload();
 - **Custom farby** - light-gray (#fafafa), light-yellow (#fff7d1), primary (#ffb64a)
 - **TailwindCSS** - utility-first CSS framework
 - **1:1 design** - presne podľa poskytnutých mockupov
-
-
