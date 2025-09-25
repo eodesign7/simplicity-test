@@ -10,7 +10,7 @@ Repo obsahuje dve verzie riešenia:
 ## 🚀 Live Demo
 
 - **Full version (main)** → [https://your-project.vercel.app](https://your-project.vercel.app)
-- **One-to-one (strict zadanie)** → [https://your-project.onrender.com](https://your-project.onrender.com)
+- **One-to-one (strict zadanie)** → [https://simplicity-test.onrender.com](https://simplicity-test.onrender.com)
 
 ---
 
