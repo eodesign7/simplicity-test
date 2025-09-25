@@ -1,113 +1,45 @@
-# PRD – Announcements Dashboard (Spiced-Up Version) 🚀
+# PRD – Announcements Dashboard (Enhanced Version)
 
-## 🎯 Vision
+## 🎯 Goal
 
-Vytvoriť **profesionálny, škálovateľný dashboard** pre správu oznamov s pokročilými funkciami, real-time komunikáciou a moderným UX/UI designom.
-
-## 🏆 Success Metrics
-
-- **User Engagement**: 90%+ user satisfaction
-- **Performance**: <2s load time, 99.9% uptime
-- **Scalability**: Support 10,000+ concurrent users
-- **Accessibility**: WCAG 2.1 AA compliance
-- **Security**: Zero critical vulnerabilities
+Rozšíriť existujúci dashboard o moderné komponenty a plnohodnotné CRUD operácie.
 
 ## 🛠 Enhanced Tech Stack
 
-### **Frontend Stack**
+- **Shadcn/ui** – moderné, accessible komponenty
+- **Convex** – real-time backend s TypeScript
+- **TanStack Query** – server state management
+- **Lucide React** – konzistentné ikony
 
-- **React 18** + TypeScript (Latest features, concurrent rendering)
-- **TailwindCSS** + **Shadcn/ui** (Modern, accessible components)
-- **React Router v6** (Advanced routing, data loading)
-- **React Hook Form** + **Zod** (Form management & validation)
-- **TanStack Query** (Server state management)
-- **Zustand** (Client state management)
-- **Framer Motion** (Smooth animations)
-- **React Hot Toast** (Notifications)
+## 📋 Enhanced Features
 
-### **Backend Stack**
+### **🎨 UI/UX Improvements**
 
-- **Node.js** + **Express/Fastify** (High-performance API)
-- **Prisma ORM** (Type-safe database access)
-- **PostgreSQL** (Primary database)
-- **Redis** (Caching & sessions)
-- **JWT** + **NextAuth.js** (Authentication)
-- **Socket.io** (Real-time communication)
-- **Multer** + **AWS S3** (File uploads)
+- **Shadcn komponenty** – Button, Input, Table, Dialog, etc.
+- **Moderný header** s search funkcionalitou
+- **Rozšírený sidebar** s nefunkčnými linkmi (pre budúcnosť)
+- **Responsive design** s mobile support
 
-### **DevOps & Deployment**
+### **🔧 Backend Integration**
 
-- **Docker** (Containerization)
-- **GitHub Actions** (CI/CD)
-- **AWS/GCP** (Cloud hosting)
-- **Vercel/Netlify** (Frontend deployment)
-- **Sentry** (Error monitoring)
-- **Vercel Analytics** (Performance tracking)
+- **Convex** real-time database
+- **Plnohodnotné CRUD** – Create, Read, Update, Delete
+- **Real-time sync** medzi klientmi
+- **Type-safe** API calls
 
-## 📋 Core Features
+### **🔍 Enhanced Table**
 
-### **🔐 Authentication & Authorization**
+- **Search** v header-i (debounced)
+- **Filter** podľa kategórií
+- **Sorting** podľa všetkých stĺpcov
+- **Pagination** pre veľké datasets
 
-- **Multi-provider login** (Email, Google, GitHub)
-- **Role-based access control** (Admin, Editor, Viewer)
-- **Session management** with refresh tokens
-- **Password reset** & email verification
-- **Two-factor authentication** (2FA)
+### **📝 Form Improvements**
 
-### **📝 Advanced Announcement Management**
-
-- **Rich text editor** (WYSIWYG with markdown support)
-- **Draft system** (Save & publish later)
-- **Scheduling** (Publish at specific time/date)
-- **Version history** (Track all changes)
-- **Bulk operations** (Select multiple, bulk edit/delete)
-- **Import/Export** (CSV, JSON formats)
-
-### **🎯 Smart Categorization**
-
-- **Hierarchical categories** (Parent/child relationships)
-- **Custom tags** (User-defined labels)
-- **Auto-categorization** (AI-powered suggestions)
-- **Category analytics** (Popular categories, engagement)
-
-### **🔍 Advanced Search & Filtering**
-
-- **Full-text search** (Title, content, tags)
-- **Advanced filters** (Date range, author, status, category)
-- **Saved searches** (Bookmark frequent queries)
-- **Search suggestions** (Autocomplete, recent searches)
-- **Search analytics** (Popular queries, zero results)
-
-### **📊 Analytics & Insights**
-
-- **View tracking** (Unique views, time spent)
-- **Engagement metrics** (Click-through rates, shares)
-- **User behavior** (Most active users, popular content)
-- **Performance dashboards** (Real-time metrics)
-- **Export reports** (PDF, Excel, CSV)
-
-### **🔔 Real-time Features**
-
-- **Live notifications** (New announcements, mentions)
-- **Real-time collaboration** (Multiple users editing)
-- **Live chat** (Team communication)
-- **Activity feeds** (Recent changes, user actions)
-- **Presence indicators** (Who's online, editing)
-
-### **📱 Mobile & PWA**
-
-- **Responsive design** (Mobile-first approach)
-- **Progressive Web App** (Offline support, push notifications)
-- **Touch gestures** (Swipe, pinch-to-zoom)
-- **Mobile-specific features** (Camera integration, location)
-
-### **🎨 Advanced UI/UX**
-
-- **Dark/Light themes** (System preference detection)
-- **Customizable dashboard** (Drag & drop widgets)
-- **Keyboard shortcuts** (Power user features)
-- **Accessibility features** (Screen reader support)
-- **Animation system** (Smooth transitions, micro-interactions)
+- **Shadcn form** komponenty
+- **Better validation** s error states
+- **Edit mode** pre existujúce záznamy
+- **Delete confirmation** dialógy
 
 ## 🏗 Architecture
 
@@ -130,35 +62,27 @@ src/
 ### **Backend Architecture**
 
 ```
-src/
-├── controllers/        # Route handlers
-├── services/          # Business logic
-├── models/            # Database models
-├── middleware/        # Express middleware
-├── utils/             # Utility functions
-├── validators/        # Input validation
-└── types/             # TypeScript definitions
+convex/
+├── schema.ts           # Database schema
+├── announcements.ts    # Announcements CRUD
+├── categories.ts       # Categories management
+└── auth.ts            # Authentication (future)
 ```
 
 ## 🔒 Security & Performance
 
 ### **Security Measures**
 
-- **Rate limiting** (API protection)
-- **CORS configuration** (Cross-origin security)
-- **Content Security Policy** (XSS protection)
-- **SQL injection prevention** (Parameterized queries)
-- **Input sanitization** (XSS prevention)
-- **File upload security** (Virus scanning, type validation)
+- **Type-safe** database queries (Convex)
+- **Input validation** (Zod schemas)
+- **CORS configuration** (built-in Convex)
 
 ### **Performance Optimization**
 
+- **Real-time updates** (Convex subscriptions)
+- **Optimistic updates** (TanStack Query)
 - **Code splitting** (Dynamic imports)
-- **Lazy loading** (Images, components)
-- **Caching strategy** (Redis, CDN)
-- **Database optimization** (Indexing, query optimization)
 - **Image optimization** (WebP, lazy loading)
-- **Bundle optimization** (Tree shaking, compression)
 
 ## 🧪 Quality Assurance
 
@@ -167,8 +91,6 @@ src/
 - **Unit tests** (Jest + React Testing Library)
 - **Integration tests** (API endpoints)
 - **E2E tests** (Playwright/Cypress)
-- **Performance tests** (Lighthouse, WebPageTest)
-- **Accessibility tests** (axe-core)
 
 ### **Code Quality**
 
@@ -176,60 +98,75 @@ src/
 - **TypeScript strict mode** (Type safety)
 - **Husky** (Git hooks)
 - **Conventional commits** (Standardized messages)
-- **Code reviews** (Pull request process)
 
 ## 📈 Roadmap
 
-### **Phase 1: Foundation (Weeks 1-2)**
+### **Phase 1: Shadcn Integration (Week 1)**
 
-- Database setup & Prisma integration
-- Authentication system
-- Basic CRUD operations
-- Core UI components
+- Shadcn/ui setup & configuration
+- Dashboard components installation
+- Component migration from custom to Shadcn
+- Icon system integration
+- Theme customization
 
-### **Phase 2: Core Features (Weeks 3-4)**
+### **Phase 2: Backend Integration (Week 2)**
 
-- Advanced announcement management
-- Search & filtering
-- User management
-- Real-time notifications
+- Convex project setup
+- Database schema design
+- CRUD operations implementation
+- Real-time sync setup
 
-### **Phase 3: Enhancement (Weeks 5-6)**
+### **Phase 3: Enhanced Features (Week 3)**
 
-- Analytics dashboard
-- Mobile optimization
+- Header search functionality
+- Table filtering & sorting
+- Pagination implementation
+- Form improvements
+
+### **Phase 4: CRUD Operations (Week 4)**
+
+- Edit mode implementation
+- Delete functionality
+- Bulk operations
+- Enhanced form UX
+
+### **Phase 5: Sidebar & Navigation (Week 5)**
+
+- Extended sidebar with links
+- Navigation structure
+- Active states
+- Mobile responsiveness
+
+### **Phase 6: Polish & Deploy (Week 6)**
+
+- Error handling improvements
+- Loading states
 - Performance optimization
-- Testing suite
-
-### **Phase 4: Production (Weeks 7-8)**
-
-- Security hardening
-- CI/CD pipeline
-- Monitoring & logging
-- Documentation
+- Production deployment
 
 ## ✅ Acceptance Criteria
 
 ### **Functional Requirements**
 
-- [ ] User can register/login with multiple providers
-- [ ] User can create, edit, delete announcements
-- [ ] User can search and filter announcements
-- [ ] User can schedule announcements
-- [ ] User can view analytics and insights
-- [ ] System supports real-time notifications
+- [ ] User can view announcements in modern table
+- [ ] User can search announcements in header
+- [ ] User can filter announcements by category
+- [ ] User can sort announcements by any column
+- [ ] User can create new announcements
+- [ ] User can edit existing announcements
+- [ ] User can delete announcements with confirmation
+- [ ] System supports real-time updates
 - [ ] System works on mobile devices
-- [ ] System supports dark/light themes
+- [ ] System uses Shadcn/ui components
 
 ### **Non-Functional Requirements**
 
 - [ ] Page load time < 2 seconds
-- [ ] 99.9% uptime availability
-- [ ] Support 1000+ concurrent users
-- [ ] WCAG 2.1 AA accessibility compliance
-- [ ] Zero critical security vulnerabilities
-- [ ] 90%+ test coverage
+- [ ] Real-time updates < 100ms latency
 - [ ] Mobile responsive design
+- [ ] WCAG 2.1 AA accessibility compliance
+- [ ] Type-safe database operations
+- [ ] 90%+ test coverage
 - [ ] Cross-browser compatibility
 
 ### **Technical Requirements**
@@ -237,12 +174,12 @@ src/
 - [ ] TypeScript strict mode enabled
 - [ ] ESLint with zero errors
 - [ ] All tests passing
-- [ ] Docker containerization
-- [ ] CI/CD pipeline functional
-- [ ] Environment configuration
+- [ ] Convex backend functional
+- [ ] Shadcn/ui components integrated
+- [ ] Real-time sync working
 - [ ] Error monitoring setup
 - [ ] Performance monitoring active
 
 ---
 
-**🎯 This PRD represents a professional-grade application that can compete with modern SaaS platforms while maintaining clean, maintainable code architecture.**
+**🎯 This PRD represents a practical enhancement of the existing application with modern components and real-time capabilities.**

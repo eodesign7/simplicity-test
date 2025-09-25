@@ -1,11 +1,11 @@
 # Announcements Dashboard 🚀
 
-**Profesionálny dashboard pre správu oznamov** - od jednoduchého testovacieho zadania po plnohodnotnú aplikáciu.
+**Evolúcia jednoduchého dashboard-u** - od základnej verzie po rozšírenú s modernými komponentmi.
 
 ## 🌐 Live Demo
 
 - **One-to-One Version** → [https://simplicity-test.onrender.com](https://simplicity-test.onrender.com)
-- **Spiced-Up Version** → _Coming Soon_ (main branch)
+- **Enhanced Version** → _Coming Soon_ (main branch)
 - **Source Code** → [https://github.com/eodesign7/simplicity-test](https://github.com/eodesign7/simplicity-test)
 
 ---
@@ -22,20 +22,20 @@ Striktne podľa testovacieho zadania:
 - Custom UI komponenty
 - Toast notifikácie
 
-### 🚀 **Phase 2: Spiced-Up (IN PROGRESS)**
+### 🚀 **Phase 2: Enhanced (IN PROGRESS)**
 
-Profesionálna verzia s pokročilými funkciami:
+Rozšírená verzia s modernými komponentmi:
 
-- Database integration (PostgreSQL)
-- User authentication (JWT)
-- Real-time features (Socket.io)
-- Advanced UI (Shadcn/ui)
-- Analytics dashboard
-- Mobile PWA
+- **Shadcn/ui** komponenty
+- **Convex** backend (real-time)
+- **Plnohodnotné CRUD** operácie
+- **Header s search** funkcionalitou
+- **Filter & Sorting** v tabuľke
+- **Rozšírený Sidebar** s linkmi
 
 ---
 
-## 🛠 Tech Stack Evolution
+## 🛠 Tech Stack
 
 ### **Current (One-to-One)**
 
@@ -44,13 +44,13 @@ Profesionálna verzia s pokročilými funkciami:
 - **react-hook-form** + **Zod** + **react-hot-toast**
 - **Local Storage** (mock data fallback)
 
-### **Next (Spiced-Up)**
+### **Enhanced (Phase 2)**
 
-- **React 18** + **TypeScript** + **TailwindCSS**
-- **Shadcn/ui** + **Framer Motion**
-- **Node.js** + **Express** + **Prisma ORM**
-- **PostgreSQL** + **Redis** + **JWT**
-- **Socket.io** + **AWS S3**
+- **Shadcn/ui** (moderné komponenty)
+- **Convex** (real-time backend)
+- **TanStack Query** (server state)
+- **Lucide React** (ikony)
+- **React Hook Form** + **Zod** (formuláre)
 
 ---
 
@@ -66,20 +66,9 @@ pnpm dev
 
 Aplikácia bude dostupná na `http://localhost:5173`
 
-## 🛠 Tech Stack
+## 💾 Data Persistence
 
-- **React** + **Vite**
-- **TypeScript**
-- **TailwindCSS** (štýlovanie)
-- **React Router** (routing)
-- **react-hook-form** (formuláre)
-- **Zod** (validácia)
-- **react-hot-toast** (notifikácie)
-- **pnpm** (package manager)
-
-## 💾 Perzistencia dát
-
-### Local Storage + Mock Data systém
+### **Current: Local Storage + Mock Data**
 
 Aplikácia používa hybridný prístup pre ukladanie dát:
 
@@ -89,36 +78,14 @@ Aplikácia používa hybridný prístup pre ukladanie dát:
 - Tieto dáta sa automaticky uložia do **Local Storage**
 - Následne sa všetky operácie vykonávajú cez Local Storage
 
-#### 2. **Logika fungovania**
+#### 2. **Enhanced: Convex Backend**
 
-```typescript
-// lib/storage.ts
-export function loadAnnouncements(): Announcement[] {
-  const stored = localStorage.getItem("announcements-data");
-  if (stored) {
-    return JSON.parse(stored); // Načíta z Local Storage
-  }
+- **Real-time database** s TypeScript
+- **Automatic sync** medzi klientmi
+- **Type-safe** API calls
+- **Optimistic updates**
 
-  // Fallback na mock dáta ak je Local Storage prázdny
-  localStorage.setItem("announcements-data", JSON.stringify(mockData));
-  return mockData;
-}
-```
-
-#### 3. **Ukladanie nových záznamov**
-
-- Nové oznamy sa pridávajú do Local Storage
-- Dáta sa **perzistentne** uchovávajú medzi sessions
-- Po refreshi stránky sa dáta **nestratia**
-
-#### 4. **Výhody tohto prístupu**
-
-- ✅ **Rýchle pre development** - okamžite dostupné dáta
-- ✅ **Perzistentné** - dáta sa nestratia po refreshi
-- ✅ **Žiadny backend** - všetko beží v prehliadači
-- ✅ **Jednoduché testovanie** - možnosť resetovať Local Storage
-
-### Reset dát
+### **Reset dát**
 
 Pre reset na pôvodné mock dáta:
 
@@ -154,27 +121,64 @@ location.reload();
 
 ## 🎯 Funkcionalita
 
-### CRUD operácie (podľa zadania)
+### **Current: Basic CRUD (One-to-One)**
 
 - **CREATE** - vytvorenie nového oznamu cez "Publish" button
 - **READ** - zobrazenie zoznamu oznamov v tabuľke
 - **UPDATE** - **NIE** (podľa zadania len CREATE)
 - **DELETE** - **NIE** (podľa zadania len CREATE)
 
-### Formulár validácia
+### **Enhanced: Full CRUD Operations**
+
+- **CREATE** - vytvorenie nového oznamu
+- **READ** - zobrazenie s filtrami a sortovaním
+- **UPDATE** - úprava existujúcich záznamov
+- **DELETE** - mazanie s confirmation dialógom
+- **BULK** - hromadné operácie
+
+### **Form validácia**
 
 - **Všetky polia povinné** - title, content, categories, publication date
 - **Toast notifikácie** - úspech/chyba v pravom dolnom rohu
 - **MM/DD/YYYY HH:mm** formát pre dátum
 
-### Custom komponenty
+### **Enhanced Features**
 
-- **Multiselect dropdown** - kategórie s custom logikou
-- **Responsive design** - funguje na všetkých zariadeniach
-- **Lato font** - celá aplikácia používa Lato font
+- **Search** v header-i (debounced)
+- **Filter** podľa kategórií
+- **Sorting** podľa všetkých stĺpcov
+- **Pagination** pre veľké datasets
+- **Real-time updates** medzi klientmi
 
 ## 🎨 Design
 
 - **Custom farby** - light-gray (#fafafa), light-yellow (#fff7d1), primary (#ffb64a)
 - **TailwindCSS** - utility-first CSS framework
-- **1:1 design** - presne podľa poskytnutých mockupov
+- **Shadcn/ui** - moderné, accessible komponenty
+- **Responsive design** - mobile-first prístup
+
+## 🚀 Development
+
+### **Current Phase: Shadcn Integration**
+
+```bash
+# Inštalácia Shadcn/ui
+npx shadcn-ui@latest init
+
+# Pridanie komponentov
+npx shadcn-ui@latest add button table input dialog
+```
+
+### **Next Phase: Convex Backend**
+
+```bash
+# Inštalácia Convex
+npm install convex
+
+# Setup projektu
+npx convex dev
+```
+
+---
+
+**🎯 Tento projekt demonštruje evolúciu od jednoduchého testovacieho zadania po profesionálnu aplikáciu s modernými komponentmi a real-time funkcionalitou.**
