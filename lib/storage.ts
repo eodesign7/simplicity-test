@@ -5,6 +5,11 @@ const STORAGE_KEY = "announcements-data";
 
 // Load data from localStorage or fallback to mock data
 export function loadAnnouncements(): Announcement[] {
+  // Check if we're in browser environment
+  if (typeof window === "undefined") {
+    return initialMockData;
+  }
+
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
@@ -22,6 +27,11 @@ export function loadAnnouncements(): Announcement[] {
 
 // Save announcements to localStorage
 export function saveAnnouncements(announcements: Announcement[]): void {
+  // Check if we're in browser environment
+  if (typeof window === "undefined") {
+    return;
+  }
+
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(announcements));
   } catch (error) {

@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
-import { announcementSchema, AnnouncementFormData } from "../validation";
+import { announcementSchema } from "../validation";
+import type { AnnouncementFormData } from "../../types";
 import { getAnnouncementById, createAnnouncement } from "../storage";
 import { availableCategories } from "../mock-data";
 
@@ -97,7 +98,7 @@ export function useAnnouncementForm(id?: string) {
     dropdownRef,
     watchedCategories,
     toggleCategory,
-    onSubmit: form.handleSubmit(onSubmit),
+    onSubmit,
     availableCategories,
   };
 }
