@@ -1,78 +1,5 @@
 import { Link } from "react-router";
-
-// Mock data podľa obrázka - presne ako na obrázku
-const mockAnnouncements = [
-  {
-    id: 1,
-    title: "Title 1",
-    publicationDate: "Aug 11, 2023 04:38",
-    lastUpdate: "Aug 11, 2023",
-    categories: "City",
-  },
-  {
-    id: 2,
-    title: "Title 2",
-    publicationDate: "Aug 11, 2023 04:36",
-    lastUpdate: "Aug 11, 2023",
-    categories: "City",
-  },
-  {
-    id: 3,
-    title: "Title 3",
-    publicationDate: "Aug 11, 2023 04:35",
-    lastUpdate: "Aug 11, 2023",
-    categories: "City",
-  },
-  {
-    id: 4,
-    title: "Title 4",
-    publicationDate: "Apr 19, 2023 05:14",
-    lastUpdate: "Apr 19, 2023",
-    categories: "City",
-  },
-  {
-    id: 5,
-    title: "Title 5",
-    publicationDate: "Apr 19, 2023 05:11",
-    lastUpdate: "Apr 19, 2023",
-    categories: "City",
-  },
-  {
-    id: 6,
-    title: "Title 6",
-    publicationDate: "Apr 19, 2023 05:11",
-    lastUpdate: "Apr 19, 2023",
-    categories: "City",
-  },
-  {
-    id: 7,
-    title: "Title 7",
-    publicationDate: "Mar 24, 2023 07:27",
-    lastUpdate: "Mar 24, 2023",
-    categories: "City,Health",
-  },
-  {
-    id: 8,
-    title: "Title 8",
-    publicationDate: "Mar 24, 2023 07:26",
-    lastUpdate: "Mar 24, 2023",
-    categories: "City,Health",
-  },
-  {
-    id: 9,
-    title: "Title 9",
-    publicationDate: "Mar 24, 2023 07:26",
-    lastUpdate: "Mar 24, 2023",
-    categories: "City,Health",
-  },
-  {
-    id: 10,
-    title: "Title 10",
-    publicationDate: "Mar 24, 2023 07:26",
-    lastUpdate: "Mar 24, 2023",
-    categories: "City,Health",
-  },
-];
+import { mockAnnouncements } from "../data/mockAnnouncements";
 
 export function AnnouncementsTable() {
   return (
@@ -116,7 +43,7 @@ export function AnnouncementsTable() {
                   {announcement.lastUpdate}
                 </td>
                 <td className="py-3 px-4 text-neutral-600 text-left">
-                  {announcement.categories}
+                  {announcement.categories.join(", ")}
                 </td>
                 <td className="py-3 px-4">
                   <Link

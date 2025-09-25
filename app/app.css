@@ -3,6 +3,7 @@
 @theme {
   --color-light-gray: #fafafa;
   --color-light-yellow: #fff7d1;
+  --color-primary: #ffb64a;
   --font-sans: "Lato", ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -13,4 +14,13 @@ body {
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
+}
+
+/* Hide scrollbar for dropdown */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
