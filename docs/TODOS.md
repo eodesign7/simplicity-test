@@ -4,12 +4,12 @@
 
 - [X] Inicializovať projekt cez `pnpm create vite@latest`
 - [X] Pridať TypeScript template
-- [ ] Pridať TailwindCSS + základnú konfiguráciu
+- [X] Pridať TailwindCSS + základnú konfiguráciu
 - [ ] Pridať React Router (basic setup)
-- [ ] Pridať react-table
-- [ ] Pridať react-hook-form a react-select
+- [X] Pridať react-table
+- [X] Pridať react-hook-form a react-select
 
-## Layout
+## Layout / Base Components
 
 - [ ] Vytvoriť jednoduchý layout s headerom + sidebarom
 - [ ] Pridať link na stránku s tabuľkou oznamov
