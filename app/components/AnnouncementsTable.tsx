@@ -1,13 +1,10 @@
 import { Link } from "react-router";
-import { useAnnouncements } from "../../lib/hooks/useAnnouncements";
-import { TableSkeleton } from "./ui/Skeleton";
+
 
 export function AnnouncementsTable() {
-  const { announcements, isLoading } = useAnnouncements();
-
-  if (isLoading) {
-    return <TableSkeleton />;
-  }
+  // TODO: Implement with Convex backend
+  const announcements: any[] = [];
+  const isLoading = false;
 
   return (
     <div className="bg-white p-6">
@@ -35,9 +32,9 @@ export function AnnouncementsTable() {
             </tr>
           </thead>
           <tbody>
-            {announcements.map((announcement) => (
+            {announcements.map((announcement, index) => (
               <tr
-                key={announcement.id}
+                key={index}
                 className="border-b border-neutral-300 hover:bg-neutral-50"
               >
                 <td className="py-3 pl-12 pr-4 text-neutral-900 text-left">

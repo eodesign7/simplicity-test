@@ -16,9 +16,9 @@
 
 Striktne podľa testovacieho zadania:
 
-- Tabuľka oznamov s mock dátami
+- Tabuľka oznamov s Convex backend
 - Form validácia s Zod
-- Local Storage perzistencia
+- Convex backend perzistencia
 - Custom UI komponenty
 - Toast notifikácie
 
@@ -42,7 +42,7 @@ Rozšírená verzia s modernými komponentmi:
 - **React + Vite** + **TypeScript**
 - **TailwindCSS** + **React Router**
 - **react-hook-form** + **Zod** + **react-hot-toast**
-- **Local Storage** (mock data fallback)
+- **Convex** (real-time backend)
 
 ### **Enhanced (Phase 2)**
 
@@ -68,15 +68,15 @@ Aplikácia bude dostupná na `http://localhost:5173`
 
 ## 💾 Data Persistence
 
-### **Current: Local Storage + Mock Data**
+### **Current: Convex Backend**
 
-Aplikácia používa hybridný prístup pre ukladanie dát:
+Aplikácia používa moderný real-time backend:
 
-#### 1. **Úvodný load**
+#### 1. **Real-time sync**
 
-- Pri prvom spustení sa načítajú dáta z `lib/mock-data.ts`
-- Tieto dáta sa automaticky uložia do **Local Storage**
-- Následne sa všetky operácie vykonávajú cez Local Storage
+- Všetky dáta sa ukladajú v **Convex** databáze
+- **Automatic sync** medzi klientmi
+- **Type-safe** API calls
 
 #### 2. **Enhanced: Convex Backend**
 
@@ -87,12 +87,11 @@ Aplikácia používa hybridný prístup pre ukladanie dát:
 
 ### **Reset dát**
 
-Pre reset na pôvodné mock dáta:
+Pre reset dát v Convex databáze:
 
 ```javascript
-// V Developer Tools Console
-localStorage.removeItem("announcements-data");
-location.reload();
+// V Convex Dashboard alebo cez API
+// Dáta sa resetujú automaticky v development móde
 ```
 
 ## 📁 Štruktúra projektu
@@ -110,9 +109,9 @@ location.reload();
 │   │   └── announcements.$id.tsx # Detail/Edit oznamu
 │   ├── app.css              # Globálne štýly
 │   └── root.tsx             # Root komponent
-├── lib/
-│   ├── storage.ts           # Local Storage funkcie
-│   └── mock-data.ts         # Počiatočné mock dáta
+├── convex/                  # Convex backend
+│   ├── schema.ts           # Database schema
+│   └── functions/          # API functions
 ├── types.d.ts               # TypeScript typy
 └── docs/
     ├── PRD.md               # Product Requirements

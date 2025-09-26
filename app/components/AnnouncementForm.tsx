@@ -1,28 +1,27 @@
-import { useAnnouncementForm } from "../../lib/hooks/useAnnouncementForm";
-import { FormField } from "./ui/FormField";
-import { CategoryDropdown } from "./ui/CategoryDropdown";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+
 
 interface AnnouncementFormProps {
   id?: string;
 }
 
 export function AnnouncementForm({ id }: AnnouncementFormProps) {
-  const {
-    form,
-    isNewAnnouncement,
-    isDropdownOpen,
-    setIsDropdownOpen,
-    dropdownRef,
-    watchedCategories,
-    toggleCategory,
-    onSubmit,
-  } = useAnnouncementForm(id);
+  // TODO: Implement with Convex backend
+  const isNewAnnouncement = !id || id === "new";
+  const isDropdownOpen = false;
+  const setIsDropdownOpen = () => {};
+  const dropdownRef = null;
+  const watchedCategories: string[] = [];
+  const toggleCategory = () => {};
+  const onSubmit = () => {};
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = form;
+  // TODO: Implement with Convex backend
+  const register = () => ({});
+  const handleSubmit = (fn: any) => (e: any) => e.preventDefault();
+  const errors = {};
+  const isSubmitting = false;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

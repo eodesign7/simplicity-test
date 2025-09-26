@@ -1,8 +1,8 @@
 import { useParams } from "react-router";
 import type { Route } from "./+types/announcements.$id";
-import { Layout } from "../components/Layout";
-import { AnnouncementForm } from "../components/AnnouncementForm";
-import { getAnnouncementById } from "../../lib/storage";
+import { Layout } from "../components/main-layout";
+
+// TODO: Implement with Convex backend
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -17,7 +17,8 @@ export function meta({}: Route.MetaArgs) {
 export default function AnnouncementDetail() {
   const { id } = useParams();
   const isNewAnnouncement = !id || id === "new";
-  const announcement = id ? getAnnouncementById(id) : null;
+  // TODO: Implement with Convex backend
+  const announcement = null;
 
   if (!isNewAnnouncement && !announcement) {
     return (
@@ -40,7 +41,16 @@ export default function AnnouncementDetail() {
             : "Edit the announcement"}
         </h1>
 
-        <AnnouncementForm id={id} />
+        <div className="space-y-4">
+          <p className="text-neutral-600">
+            {isNewAnnouncement
+              ? "Create a new announcement with title, content, categories, and publication date."
+              : "Edit the existing announcement details."}
+          </p>
+          <p className="text-sm text-neutral-500">
+            TODO: Implement with Convex backend
+          </p>
+        </div>
       </div>
     </Layout>
   );

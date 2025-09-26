@@ -2,15 +2,15 @@
 
 ## 🎯 Phase 1: Shadcn Setup & Dashboard Components
 
-- [ ] **Shadcn/ui inštalácia** – setup a konfigurácia
-- [ ] **Dashboard komponenty** – Button, Table, Input, Dialog, etc.
-- [ ] **Upraviť dashboard** pre naše potreby (announcements)
-- [ ] **Icon system** – Lucide React integrácia
+- [X] **Shadcn/ui inštalácia** – setup a konfigurácia
+- [X] **Dashboard komponenty(block: dashboard-01)** – Button, Table, Input, Dialog, etc.
+- [X] **Upraviť dashboard** pre naše potreby (announcements)
+- [X] **Icon system** – Lucide React integrácia
 - [ ] **Theme setup** – custom farby a styling (zatiaľ základné)
 
 ## 🎯 Phase 2: Backend Integration
 
-- [ ] **Convex setup** – projekt a konfigurácia
+- [X] **Convex setup** – projekt a konfigurácia
 - [ ] **Database schema** – announcements, categories
 - [ ] **API functions** – CRUD operácie
 - [ ] **Real-time sync** – live updates
