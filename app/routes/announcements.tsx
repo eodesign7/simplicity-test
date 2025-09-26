@@ -1,7 +1,11 @@
 import type { Route } from "./+types/announcements";
+import { ConvexHttpClient } from "convex/browser";
+import { api } from "../../convex/_generated/api";
 import { Layout } from "../components/main-layout";
-import { DataTable } from "@/components/data-table";
-import data from "../dashboard/data.json";
+import { DataTableWithPreload } from "@/components/data-table";
+
+// Create Convex client for preloading
+const convex = new ConvexHttpClient(import.meta.env.VITE_CONVEX_URL!);
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -13,13 +17,27 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function Announcements() {
+// Preload data in the loader
+export async function loader(): Promise<{ preloadedAnnouncements: any }> {
+  const announcements = await convex.query(api.announcements.getAll);
+  return {
+    preloadedAnnouncements: {
+      _valueJSON: announcements,
+      _argsJSON: {},
+      _name: "announcements:getAll",
+    },
+  };
+}
+
+export default function Announcements({ loaderData }: Route.ComponentProps) {
   return (
     <Layout>
       <div className="flex flex-1 flex-col">
         <div className="@container/main flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-            <DataTable data={data} />
+            <DataTableWithPreload
+              preloadedData={loaderData.preloadedAnnouncements}
+            />
           </div>
         </div>
       </div>
