@@ -2,39 +2,40 @@
 
 ## 🎯 Phase 1: Shadcn Setup & Dashboard Components
 
-- [X] **Shadcn/ui inštalácia** – setup a konfigurácia
-- [X] **Dashboard komponenty(block: dashboard-01)** – Button, Table, Input, Dialog, etc.
-- [X] **Upraviť dashboard** pre naše potreby (announcements)
-- [X] **Icon system** – Lucide React integrácia
-- [ ] **Theme setup** – custom farby a styling (zatiaľ základné)
+- [x] **Shadcn/ui inštalácia** – setup a konfigurácia
+- [x] **Dashboard komponenty(block: dashboard-01)** – Button, Table, Input, Dialog, etc.
+- [x] **Upraviť dashboard** pre naše potreby (announcements)
+- [x] **Icon system** – Lucide React integrácia
+- [x] **Theme setup** – custom farby a styling (zatiaľ základné)
 
 ## 🎯 Phase 2: Backend Integration
 
-- [X] **Convex setup** – projekt a konfigurácia
-- [ ] **Database schema** – announcements, categories
-- [ ] **API functions** – CRUD operácie
-- [ ] **Real-time sync** – live updates
+- [x] **Convex setup** – projekt a konfigurácia
+- [x] **Database schema** – announcements, categories
+- [x] **API functions** – CRUD operácie
+- [x] **Dummy Script** - Bulk nahratie dummy oznamov do DB
+- [ ] **Real-time FE sync** – live updates, useQueries, preloadedQuery - test(Novinka)
 
 ## 🎯 Phase 3: Enhanced Features
 
-- [ ] **Header s search** – debounced search functionality
-- [ ] **Table filters** – kategórie, dátumy
-- [ ] **Advanced sorting** – všetky stĺpce
-- [ ] **Pagination** – pre veľké datasets
+- [x] **Header** – Path, Links
+- [x] **Search** - Rychle vyhladavanie v oznamoch
+- [x] **Table filters** – kategórie, dátumy
+- [x] **Advanced sorting** – všetky stĺpce
+- [x] **Pagination** – pre veľké datasets
 
 ## 🎯 Phase 4: CRUD Operations
 
 - [ ] **Edit mode** – úprava existujúcich záznamov
 - [ ] **Delete functionality** – s confirmation dialógom
-- [ ] **Bulk operations** – select multiple, bulk delete
 - [ ] **Form improvements** – lepšie UX
 
 ## 🎯 Phase 5: Sidebar & Navigation
 
-- [ ] **Rozšírený sidebar** – pridanie nefunkčných linkov
-- [ ] **Navigation structure** – pre budúce features
-- [ ] **Active states** – lepšie UX
-- [ ] **Mobile responsive** – hamburger menu
+- [x] **Rozšírený sidebar** – pridanie nefunkčných linkov
+- [x] **Navigation structure** – pre budúce features
+- [x] **Active states** – lepšie UX
+- [x] **Mobile responsive** – hamburger menu
 
 ## 🎯 Phase 6: Polish & Deploy
 

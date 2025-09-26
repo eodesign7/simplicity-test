@@ -23,12 +23,15 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Link } from "react-router";
+import { useQuery } from "convex/react";
+import { api } from "../../convex/_generated/api";
 
-// Define types that are not exported from @tanstack/react-table
-type ColumnDef<T> = any;
-type ColumnFiltersState = any;
-type Row<T> = any;
-type SortingState = any;
+import type {
+  ColumnDef,
+  ColumnFiltersState,
+  Row,
+  SortingState,
+} from "@tanstack/react-table";
 
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -58,105 +61,59 @@ import {
 } from "./ui/table";
 
 type Data = {
-  id: string;
+  _id: string;
   title: string;
   publicationDate: string;
   lastUpdate: string;
-  categories: string[];
-  link: string;
-  status: "Published" | "Unpublished";
+  categories: string;
+  status: boolean;
 };
-
-const announcementsData: Data[] = [
-  {
-    id: "1",
-    title: "Announcement 1",
-    publicationDate: "2021-01-01",
-    lastUpdate: "2021-01-01",
-    categories: ["Category 1"],
-    link: "https://www.google.com",
-    status: "Published",
-  },
-  {
-    id: "2",
-    title: "Announcement 2",
-    publicationDate: "2021-01-02",
-    lastUpdate: "2021-01-02",
-    categories: ["Category 2"],
-    link: "https://www.google.com",
-    status: "Published",
-  },
-  {
-    id: "3",
-    title: "Announcement 3",
-    publicationDate: "2021-01-03",
-    lastUpdate: "2021-01-03",
-    categories: ["Category 3"],
-    link: "https://www.google.com",
-    status: "Unpublished",
-  },
-  {
-    id: "4",
-    title: "Announcement 4",
-    publicationDate: "2021-01-04",
-    lastUpdate: "2021-01-04",
-    categories: ["Category 4"],
-    link: "https://www.google.com",
-    status: "Published",
-  },
-];
 
 const columns: ColumnDef<Data>[] = [
   {
     accessorKey: "title",
     header: "Title",
-    cell: ({ row }) => (
+    cell: ({ row }: { row: Row<Data> }) => (
       <div className="font-medium">{row.getValue("title")}</div>
     ),
   },
   {
     accessorKey: "publicationDate",
-    header: "Publication Date",
+    header: "Published",
   },
   {
     accessorKey: "lastUpdate",
-    header: "Last Update",
+    header: "Updated",
   },
   {
     accessorKey: "categories",
     header: "Categories",
-    cell: ({ row }) => (
-      <div className="flex flex-wrap gap-1">
-        {(row.getValue("categories") as string[]).map((category) => (
-          <Badge key={category} variant="secondary" className="text-xs">
-            {category}
-          </Badge>
-        ))}
-      </div>
+    cell: ({ row }: { row: Row<Data> }) => (
+      <Badge variant="secondary" className="text-xs">
+        {row.getValue("categories")}
+      </Badge>
     ),
   },
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => (
+    cell: ({ row }: { row: Row<Data> }) => (
       <Badge
-        variant={
-          row.getValue("status") === "Published" ? "default" : "secondary"
-        }
+        variant={row.getValue("status") === true ? "default" : "secondary"}
         className={
-          row.getValue("status") === "Published"
+          row.getValue("status") === true
             ? "bg-green-100 text-green-800"
             : "bg-yellow-100 text-yellow-800"
         }
       >
-        {row.getValue("status")}
+        {row.getValue("status") === true ? "Published" : "Unpublished"}
       </Badge>
     ),
   },
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => (
+    cell: ({ row }: { row: Row<Data> }) => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -167,7 +124,7 @@ const columns: ColumnDef<Data>[] = [
         <DropdownMenuContent align="end">
           <DropdownMenuItem asChild>
             <Link
-              to={`/announcements/${row.original.id}`}
+              to={`/announcements/${row.original._id}`}
               className="flex items-center gap-2"
             >
               <Edit className="h-4 w-4" />
@@ -177,15 +134,12 @@ const columns: ColumnDef<Data>[] = [
           <DropdownMenuItem
             onClick={() => {
               // TODO: Implement publish/unpublish functionality
-              const newStatus =
-                row.original.status === "Published"
-                  ? "Unpublished"
-                  : "Published";
-              console.log("Toggle status", row.original.id, newStatus);
+              const newStatus = !row.original.status;
+              console.log("Toggle status", row.original._id, newStatus);
             }}
             className="flex items-center gap-2"
           >
-            {row.original.status === "Published" ? (
+            {row.original.status === true ? (
               <>
                 <EyeOff className="h-4 w-4" />
                 Unpublish
@@ -200,7 +154,7 @@ const columns: ColumnDef<Data>[] = [
           <DropdownMenuItem
             onClick={() => {
               // TODO: Implement delete functionality
-              console.log("Delete", row.original.id);
+              console.log("Delete", row.original._id);
             }}
             className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
           >
@@ -214,7 +168,7 @@ const columns: ColumnDef<Data>[] = [
 ];
 
 export function DataTable() {
-  const [data, setData] = React.useState(() => announcementsData);
+  const announcements = useQuery(api.announcements.getAll);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -227,13 +181,26 @@ export function DataTable() {
   });
   const [activeTab, setActiveTab] = React.useState("all");
 
+  // Transform Convex data to match our Data type
+  const data = React.useMemo(() => {
+    if (!announcements) return [];
+    return announcements.map((item) => ({
+      _id: item._id,
+      title: item.title,
+      publicationDate: item.publicationDate,
+      lastUpdate: item.lastUpdate,
+      categories: item.categories,
+      status: item.status,
+    }));
+  }, [announcements]);
+
   // Filter data based on active tab
   const filteredData = React.useMemo(() => {
     if (activeTab === "all") return data;
     if (activeTab === "published")
-      return data.filter((item) => item.status === "Published");
+      return data.filter((item) => item.status === true);
     if (activeTab === "unpublished")
-      return data.filter((item) => item.status === "Unpublished");
+      return data.filter((item) => item.status === false);
     return data;
   }, [data, activeTab]);
 
@@ -245,7 +212,7 @@ export function DataTable() {
       columnFilters,
       pagination,
     },
-    getRowId: (row) => row.id.toString(),
+    getRowId: (row) => row._id,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onPaginationChange: setPagination,
@@ -256,6 +223,16 @@ export function DataTable() {
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
+
+  if (!announcements) {
+    return (
+      <div className="w-full space-y-4 p-6 flex items-center justify-center">
+        <div className="text-sm text-muted-foreground">
+          Loading announcements...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full space-y-4 p-6">
@@ -361,77 +338,87 @@ export function DataTable() {
             </Table>
           </div>
 
-          <div className="flex items-center justify-between space-x-2 py-4">
-            <div className="flex-1 text-sm text-muted-foreground">
-              {table.getFilteredRowModel().rows.length} row(s) total.
+          {/* Pagination */}
+
+          {table.getFilteredRowModel().rows.length > 10 ? (
+            <div className="flex items-center justify-between space-x-2 py-4">
+              <div className="flex-1 text-sm text-muted-foreground">
+                {table.getFilteredRowModel().rows.length} row(s) total.
+              </div>
+              <div className="flex items-center space-x-6 lg:space-x-8">
+                <div className="flex items-center space-x-2">
+                  <p className="text-sm font-medium">Rows per page</p>
+                  <Select
+                    value={`${table.getState().pagination.pageSize}`}
+                    onValueChange={(value) => {
+                      table.setPageSize(Number(value));
+                    }}
+                  >
+                    <SelectTrigger className="h-8 w-[70px]">
+                      <SelectValue
+                        placeholder={table.getState().pagination.pageSize}
+                      />
+                    </SelectTrigger>
+                    <SelectContent side="top">
+                      {[10, 20, 30, 40, 50].map((pageSize) => (
+                        <SelectItem key={pageSize} value={`${pageSize}`}>
+                          {pageSize}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+                  Page {table.getState().pagination.pageIndex + 1} of{" "}
+                  {table.getPageCount()}
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Button
+                    variant="outline"
+                    className="hidden h-8 w-8 p-0 lg:flex"
+                    onClick={() => table.setPageIndex(0)}
+                    disabled={!table.getCanPreviousPage()}
+                  >
+                    <span className="sr-only">Go to first page</span>
+                    <ChevronsLeft className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-8 w-8 p-0"
+                    onClick={() => table.previousPage()}
+                    disabled={!table.getCanPreviousPage()}
+                  >
+                    <span className="sr-only">Go to previous page</span>
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-8 w-8 p-0"
+                    onClick={() => table.nextPage()}
+                    disabled={!table.getCanNextPage()}
+                  >
+                    <span className="sr-only">Go to next page</span>
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="hidden h-8 w-8 p-0 lg:flex"
+                    onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                    disabled={!table.getCanNextPage()}
+                  >
+                    <span className="sr-only">Go to last page</span>
+                    <ChevronsRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center space-x-6 lg:space-x-8">
-              <div className="flex items-center space-x-2">
-                <p className="text-sm font-medium">Rows per page</p>
-                <Select
-                  value={`${table.getState().pagination.pageSize}`}
-                  onValueChange={(value) => {
-                    table.setPageSize(Number(value));
-                  }}
-                >
-                  <SelectTrigger className="h-8 w-[70px]">
-                    <SelectValue
-                      placeholder={table.getState().pagination.pageSize}
-                    />
-                  </SelectTrigger>
-                  <SelectContent side="top">
-                    {[10, 20, 30, 40, 50].map((pageSize) => (
-                      <SelectItem key={pageSize} value={`${pageSize}`}>
-                        {pageSize}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-                Page {table.getState().pagination.pageIndex + 1} of{" "}
-                {table.getPageCount()}
-              </div>
-              <div className="flex items-center space-x-2">
-                <Button
-                  variant="outline"
-                  className="hidden h-8 w-8 p-0 lg:flex"
-                  onClick={() => table.setPageIndex(0)}
-                  disabled={!table.getCanPreviousPage()}
-                >
-                  <span className="sr-only">Go to first page</span>
-                  <ChevronsLeft className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-8 w-8 p-0"
-                  onClick={() => table.previousPage()}
-                  disabled={!table.getCanPreviousPage()}
-                >
-                  <span className="sr-only">Go to previous page</span>
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-8 w-8 p-0"
-                  onClick={() => table.nextPage()}
-                  disabled={!table.getCanNextPage()}
-                >
-                  <span className="sr-only">Go to next page</span>
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  className="hidden h-8 w-8 p-0 lg:flex"
-                  onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                  disabled={!table.getCanNextPage()}
-                >
-                  <span className="sr-only">Go to last page</span>
-                  <ChevronsRight className="h-4 w-4" />
-                </Button>
+          ) : (
+            <div className="flex items-start justify-start py-4">
+              <div className="text-sm text-muted-foreground">
+                {table.getFilteredRowModel().rows.length} row(s) total.
               </div>
             </div>
-          </div>
+          )}
         </TabsContent>
       </Tabs>
     </div>
