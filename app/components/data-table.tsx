@@ -11,7 +11,9 @@ import {
   Trash2,
   Eye,
   EyeOff,
+  Timer,
 } from "lucide-react";
+import { toast } from "sonner";
 import {
   flexRender,
   getCoreRowModel,
@@ -72,6 +74,7 @@ import {
   TableRow,
 } from "./ui/table";
 import { CreateAnnouncementDialog } from "./CreateAnnouncementDialog";
+import { formatDateTimeForDisplay } from "../../lib/datetime-utils";
 
 type Data = {
   _id: Id<"announcements">;
@@ -106,7 +109,7 @@ export function DataTable() {
       await deleteAnnouncement({ id: id as Id<"announcements"> });
     } catch (error) {
       console.error("Failed to delete announcement:", error);
-      alert("Failed to delete announcement. Please try again.");
+      toast.error("Failed to delete announcement. Please try again.");
     }
   };
 
@@ -130,7 +133,7 @@ export function DataTable() {
       await updateAnnouncement(updateData);
     } catch (error) {
       console.error("Failed to update announcement status:", error);
-      alert("Failed to update announcement status. Please try again.");
+      toast.error("Failed to update announcement status. Please try again.");
     }
   };
 
@@ -163,16 +166,21 @@ export function DataTable() {
         if (status) {
           // If published, show publishedAt or fallback to creationTime
           const displayTime = publishedAt
-            ? new Date(publishedAt).toLocaleString()
-            : new Date(creationTime).toLocaleString();
+            ? formatDateTimeForDisplay(publishedAt)
+            : formatDateTimeForDisplay(new Date(creationTime));
           return <div className="text-sm text-green-600">{displayTime}</div>;
         } else {
           // If not published but scheduled
           return (
-            <div className="text-sm text-orange-600">
-              {publishedAt
-                ? `Scheduled: ${new Date(publishedAt).toLocaleString()}`
-                : "Not scheduled"}
+            <div className="text-sm text-amber-500 flex items-center gap-1">
+              {publishedAt ? (
+                <>
+                  <Timer className="h-3 w-3" />
+                  {formatDateTimeForDisplay(publishedAt)}
+                </>
+              ) : (
+                "Not scheduled"
+              )}
             </div>
           );
         }
@@ -207,18 +215,26 @@ export function DataTable() {
     {
       accessorKey: "status",
       header: "Status",
-      cell: ({ row }: { row: Row<Data> }) => (
-        <Badge
-          variant={row.getValue("status") === true ? "default" : "secondary"}
-          className={
-            row.getValue("status") === true
-              ? "bg-green-100 text-green-800"
-              : "bg-yellow-100 text-yellow-800"
-          }
-        >
-          {row.getValue("status") === true ? "Published" : "Unpublished"}
-        </Badge>
-      ),
+      cell: ({ row }: { row: Row<Data> }) => {
+        const status = row.getValue("status") as boolean;
+        const publishedAt = row.getValue("publishedAt") as string | undefined;
+
+        if (status) {
+          return (
+            <Badge className="bg-green-100 text-green-800">Published</Badge>
+          );
+        } else if (publishedAt) {
+          return (
+            <Badge className="bg-amber-100 text-amber-800">Scheduled</Badge>
+          );
+        } else {
+          return (
+            <Badge variant="secondary" className="bg-gray-100 text-gray-700">
+              Private
+            </Badge>
+          );
+        }
+      },
     },
     {
       id: "actions",
@@ -565,7 +581,7 @@ export function DataTableWithPreload({
       await deleteAnnouncement({ id });
     } catch (error) {
       console.error("Failed to delete announcement:", error);
-      alert("Failed to delete announcement. Please try again.");
+      toast.error("Failed to delete announcement. Please try again.");
     }
   };
 
@@ -589,7 +605,7 @@ export function DataTableWithPreload({
       await updateAnnouncement(updateData);
     } catch (error) {
       console.error("Failed to update announcement status:", error);
-      alert("Failed to update announcement status. Please try again.");
+      toast.error("Failed to update announcement status. Please try again.");
     }
   };
 
@@ -622,16 +638,21 @@ export function DataTableWithPreload({
         if (status) {
           // If published, show publishedAt or fallback to creationTime
           const displayTime = publishedAt
-            ? new Date(publishedAt).toLocaleString()
-            : new Date(creationTime).toLocaleString();
+            ? formatDateTimeForDisplay(publishedAt)
+            : formatDateTimeForDisplay(new Date(creationTime));
           return <div className="text-sm text-green-600">{displayTime}</div>;
         } else {
           // If not published but scheduled
           return (
-            <div className="text-sm text-orange-600">
-              {publishedAt
-                ? `Scheduled: ${new Date(publishedAt).toLocaleString()}`
-                : "Not scheduled"}
+            <div className="text-sm text-amber-500 flex items-center gap-1">
+              {publishedAt ? (
+                <>
+                  <Timer className="h-3 w-3" />
+                  {formatDateTimeForDisplay(publishedAt)}
+                </>
+              ) : (
+                "Not scheduled"
+              )}
             </div>
           );
         }
@@ -640,6 +661,11 @@ export function DataTableWithPreload({
     {
       accessorKey: "lastUpdate",
       header: "Updated",
+      cell: ({ row }: { row: Row<Data> }) => (
+        <div className="text-sm">
+          {formatDateTimeForDisplay(row.getValue("lastUpdate"))}
+        </div>
+      ),
     },
     {
       accessorKey: "categories",
@@ -670,18 +696,26 @@ export function DataTableWithPreload({
     {
       accessorKey: "status",
       header: "Status",
-      cell: ({ row }: { row: Row<Data> }) => (
-        <Badge
-          variant={row.getValue("status") === true ? "default" : "secondary"}
-          className={
-            row.getValue("status") === true
-              ? "bg-green-100 text-green-800"
-              : "bg-yellow-100 text-yellow-800"
-          }
-        >
-          {row.getValue("status") === true ? "Published" : "Unpublished"}
-        </Badge>
-      ),
+      cell: ({ row }: { row: Row<Data> }) => {
+        const status = row.getValue("status") as boolean;
+        const publishedAt = row.getValue("publishedAt") as string | undefined;
+
+        if (status) {
+          return (
+            <Badge className="bg-green-100 text-green-800">Published</Badge>
+          );
+        } else if (publishedAt) {
+          return (
+            <Badge className="bg-amber-100 text-amber-800">Scheduled</Badge>
+          );
+        } else {
+          return (
+            <Badge variant="secondary" className="bg-gray-100 text-gray-700">
+              Private
+            </Badge>
+          );
+        }
+      },
     },
     {
       id: "actions",

@@ -33,6 +33,7 @@ export default defineSchema({
     ),
     publishedAt: v.optional(v.string()),
     publicationDate: v.optional(v.string()), // Keep old field for migration
+    createdAt: v.optional(v.string()), // Keep old field for migration
     lastUpdate: v.string(),
     status: v.boolean(),
   }),

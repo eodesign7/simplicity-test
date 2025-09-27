@@ -42,8 +42,24 @@ export function parseDateTime(isoString: string): {
   time: string;
 } {
   const date = new Date(isoString);
+  // Round to nearest 15-minute interval for select compatibility
+  const roundedDate = roundToNearestQuarter(date);
   return {
-    date: formatDateForInput(date),
-    time: formatTimeForInput(date),
+    date: formatDateForInput(date), // Use original date
+    time: formatTimeForInput(roundedDate), // Use rounded time
   };
+}
+
+// Format datetime for display (without seconds)
+export function formatDateTimeForDisplay(date: Date | string): string {
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+  return (
+    dateObj.toLocaleDateString() +
+    " " +
+    dateObj.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    })
+  );
 }

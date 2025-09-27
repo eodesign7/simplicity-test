@@ -30,6 +30,7 @@ import {
   formatDateForInput,
   formatTimeForInput,
 } from "../../lib/datetime-utils";
+import { toast } from "sonner";
 
 const categories: MultiSelectOption[] = [
   { value: "city", label: "City" },
@@ -138,9 +139,10 @@ export function CreateAnnouncementDialog({
         status: false,
       });
       setOpen(false);
+      toast.success("Announcement created successfully!");
     } catch (error) {
       console.error("Failed to create announcement:", error);
-      setErrors({ submit: "Failed to create announcement. Please try again." });
+      toast.error("Failed to create announcement. Please try again.");
     } finally {
       setIsLoading(false);
     }

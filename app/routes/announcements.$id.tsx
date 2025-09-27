@@ -1,4 +1,4 @@
-import { useParams, useBlocker, useNavigate } from "react-router";
+import { useParams, useBlocker, useNavigate, Link } from "react-router";
 import {
   useQuery,
   useMutation,
@@ -41,6 +41,8 @@ import {
   parseDateTime,
   formatDateForInput,
 } from "../../lib/datetime-utils";
+import { toast } from "sonner";
+import { Trash2, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import * as React from "react";
 
 const categories: MultiSelectOption[] = [
@@ -71,6 +73,7 @@ export default function AnnouncementDetail() {
   const isNewAnnouncement = !id || id === "new";
 
   const updateAnnouncement = useMutation(api.announcements.update);
+  const deleteAnnouncement = useMutation(api.announcements.deleteAnnouncement);
 
   const announcement = useQuery(
     api.announcements.getById,
@@ -100,8 +103,14 @@ export default function AnnouncementDetail() {
   // Initialize form data when announcement loads
   React.useEffect(() => {
     if (announcement) {
-      const { date, time } = announcement.publishedAt
-        ? parseDateTime(announcement.publishedAt)
+      // For published announcements, use publishedAt or fallback to _creationTime
+      let publishDateTime = announcement.publishedAt;
+      if (announcement.status && !publishDateTime) {
+        publishDateTime = new Date(announcement._creationTime).toISOString();
+      }
+
+      const { date, time } = publishDateTime
+        ? parseDateTime(publishDateTime)
         : { date: "", time: "" };
 
       const initialData = {
@@ -152,10 +161,14 @@ export default function AnnouncementDetail() {
     if (!formData.content.trim()) newErrors.content = "Content is required";
     if (formData.categories.length === 0)
       newErrors.categories = "At least one category is required";
-    if (!formData.publishDate)
-      newErrors.publishDate = "Publish date is required";
-    if (!formData.publishTime)
-      newErrors.publishTime = "Publish time is required";
+
+    // Only validate publish date/time for non-published announcements
+    if (!announcement.status && !formData.status) {
+      if (!formData.publishDate)
+        newErrors.publishDate = "Publish date is required";
+      if (!formData.publishTime)
+        newErrors.publishTime = "Publish time is required";
+    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -193,8 +206,8 @@ export default function AnnouncementDetail() {
       // Update original data to current form data (changes are saved)
       setOriginalData({ ...formData });
 
-      // Navigate back or show success message
-      alert("Announcement updated successfully!");
+      // Show success message
+      toast.success("Announcement updated successfully!");
     } catch (error) {
       console.error("Failed to update announcement:", error);
       setErrors({ submit: "Failed to update announcement. Please try again." });
@@ -241,12 +254,13 @@ export default function AnnouncementDetail() {
       if (!formData.content.trim()) newErrors.content = "Content is required";
       if (formData.categories.length === 0)
         newErrors.categories = "At least one category is required";
-      if (
-        !formData.status &&
-        (!formData.publishDate || !formData.publishTime)
-      ) {
-        newErrors.publishDate =
-          "Publish date and time are required for scheduled announcements";
+
+      // Only validate publish date/time for non-published announcements
+      if (!announcement.status && !formData.status) {
+        if (!formData.publishDate)
+          newErrors.publishDate = "Publish date is required";
+        if (!formData.publishTime)
+          newErrors.publishTime = "Publish time is required";
       }
 
       if (Object.keys(newErrors).length > 0) {
@@ -290,7 +304,63 @@ export default function AnnouncementDetail() {
       }
     } catch (error) {
       console.error("Failed to save:", error);
-      setErrors({ submit: "Failed to save announcement. Please try again." });
+      toast.error("Failed to save announcement. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle delete announcement
+  const handleDelete = async () => {
+    if (!announcement) return;
+
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this announcement? This action cannot be undone."
+    );
+    if (!confirmed) return;
+
+    try {
+      setIsLoading(true);
+      await deleteAnnouncement({ id: announcement._id });
+      toast.success("Announcement deleted successfully!");
+      navigate("/announcements");
+    } catch (error) {
+      console.error("Failed to delete announcement:", error);
+      toast.error("Failed to delete announcement. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle toggle publish status
+  const handleToggleStatus = async () => {
+    if (!announcement) return;
+
+    try {
+      setIsLoading(true);
+      const now = new Date().toISOString();
+      const newStatus = !announcement.status;
+
+      const updateData: any = {
+        id: announcement._id,
+        status: newStatus,
+        lastUpdate: now,
+      };
+
+      // If publishing, set publishedAt to now
+      if (newStatus) {
+        updateData.publishedAt = now;
+      }
+
+      await updateAnnouncement(updateData);
+
+      const message = newStatus
+        ? "Announcement published!"
+        : "Announcement unpublished!";
+      toast.success(message);
+    } catch (error) {
+      console.error("Failed to toggle status:", error);
+      toast.error("Failed to update announcement status. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -313,6 +383,17 @@ export default function AnnouncementDetail() {
   return (
     <Layout>
       <div className="bg-white p-6 w-full max-w-2xl mx-auto">
+        {/* Back Button */}
+        <Link to="/announcements">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="mb-4 -ml-2 text-gray-600 hover:text-gray-900"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Announcements
+          </Button>
+        </Link>
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-2xl font-bold text-neutral-900">
             {isNewAnnouncement
@@ -375,30 +456,47 @@ export default function AnnouncementDetail() {
                   onChange={(e) =>
                     handleInputChange("publishDate", e.target.value)
                   }
-                  disabled={isLoading}
+                  disabled={isLoading || announcement?.status === true}
+                  className={
+                    announcement?.status === true
+                      ? "bg-gray-50 text-gray-600"
+                      : ""
+                  }
                   min={formatDateForInput(new Date())}
                 />
               </FormField>
 
               <FormField label="Publish Time" error={errors.publishTime}>
-                <Select
-                  value={formData.publishTime}
-                  onValueChange={(value) =>
-                    handleInputChange("publishTime", value)
-                  }
-                  disabled={isLoading}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select time" />
-                  </SelectTrigger>
-                  <SelectContent className="max-h-60">
-                    {timeOptions.map((time) => (
-                      <SelectItem key={time} value={time}>
-                        {time}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                {announcement?.status === true ? (
+                  // Disabled state: show as Input with real time value
+                  <Input
+                    type="text"
+                    value={formData.publishTime || "Not set"}
+                    disabled={true}
+                    className="bg-gray-50 text-gray-600"
+                    readOnly
+                  />
+                ) : (
+                  // Enabled state: show as Select with options
+                  <Select
+                    value={formData.publishTime}
+                    onValueChange={(value) =>
+                      handleInputChange("publishTime", value)
+                    }
+                    disabled={isLoading}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select time" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-60">
+                      {timeOptions.map((time) => (
+                        <SelectItem key={time} value={time}>
+                          {time}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
               </FormField>
             </div>
 
@@ -441,18 +539,56 @@ export default function AnnouncementDetail() {
               <p className="text-sm text-red-600">{errors.submit}</p>
             )}
 
-            <div className="flex justify-end space-x-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => window.history.back()}
-                disabled={isLoading}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Saving..." : "Save Changes"}
-              </Button>
+            <div className="flex justify-between items-center">
+              {/* Left side - Delete and Publish/Unpublish */}
+              <div className="flex space-x-3">
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  onClick={handleDelete}
+                  disabled={isLoading}
+                  className="flex items-center gap-2"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Delete
+                </Button>
+                <Button
+                  type="button"
+                  variant={announcement.status ? "secondary" : "default"}
+                  size="sm"
+                  onClick={handleToggleStatus}
+                  disabled={isLoading}
+                  className="flex items-center gap-2"
+                >
+                  {announcement.status ? (
+                    <>
+                      <EyeOff className="h-4 w-4" />
+                      Unpublish
+                    </>
+                  ) : (
+                    <>
+                      <Eye className="h-4 w-4" />
+                      Publish
+                    </>
+                  )}
+                </Button>
+              </div>
+
+              {/* Right side - Cancel and Save */}
+              <div className="flex space-x-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => window.history.back()}
+                  disabled={isLoading}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? "Saving..." : "Save Changes"}
+                </Button>
+              </div>
             </div>
           </form>
         ) : (
