@@ -61,8 +61,8 @@ async function seedAnnouncements() {
     const transformedData = mockAnnouncements.map((announcement) => ({
       title: announcement.title,
       content: announcement.content,
-      categories: normalizeCategory(announcement.categories[0] ?? "city"),
-      publicationDate: announcement.publicationDate,
+      categories: [normalizeCategory(announcement.categories[0] ?? "city")],
+      publishedAt: undefined, // Will be published immediately since status is true
       lastUpdate: announcement.lastUpdate,
       status: true,
     }));

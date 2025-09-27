@@ -14,6 +14,8 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as announcements from "../announcements.js";
+import type * as crons from "../crons.js";
+import type * as migrations from "../migrations.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -25,6 +27,8 @@ import type * as announcements from "../announcements.js";
  */
 declare const fullApi: ApiFromModules<{
   announcements: typeof announcements;
+  crons: typeof crons;
+  migrations: typeof migrations;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

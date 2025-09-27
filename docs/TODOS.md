@@ -1,6 +1,6 @@
 # TODOS – Enhanced Version 🚀
 
-## 🎯 Phase 1: Shadcn Setup & Dashboard Components
+## 🎯 Block 1: Shadcn Setup & Dashboard Components
 
 - [x] **Shadcn/ui inštalácia** – setup a konfigurácia
 - [x] **Dashboard komponenty(block: dashboard-01)** – Button, Table, Input, Dialog, etc.
@@ -8,7 +8,7 @@
 - [x] **Icon system** – Lucide React integrácia
 - [x] **Theme setup** – custom farby a styling (zatiaľ základné)
 
-## 🎯 Phase 2: Backend Integration
+## 🎯 Block 2: Backend Integration
 
 - [x] **Convex setup** – projekt a konfigurácia
 - [x] **Database schema** – announcements, categories
@@ -16,7 +16,7 @@
 - [x] **Dummy Script** - Bulk nahratie dummy oznamov do DB
 - [ ] **Real-time FE sync** – live updates, useQueries, preloadedQuery - test(Novinka)
 
-## 🎯 Phase 3: Enhanced Features
+## 🎯 Block 3: Enhanced Features
 
 - [x] **Header** – Path, Links
 - [x] **Search** - Rychle vyhladavanie v oznamoch
@@ -24,24 +24,24 @@
 - [x] **Advanced sorting** – všetky stĺpce
 - [x] **Pagination** – pre veľké datasets
 
-## 🎯 Phase 4: CRUD Operations
+## 🎯 Block 4: CRUD Operations
 
 - [ ] **Edit mode** – úprava existujúcich záznamov
-- [ ] **Delete functionality** – s confirmation dialógom
+- [x] **Delete functionality** – s confirmation dialógom
 - [ ] **Form improvements** – lepšie UX
 
-## 🎯 Phase 5: Sidebar & Navigation
+## 🎯 Block 5: Sidebar & Navigation
 
 - [x] **Rozšírený sidebar** – pridanie nefunkčných linkov
 - [x] **Navigation structure** – pre budúce features
 - [x] **Active states** – lepšie UX
 - [x] **Mobile responsive** – hamburger menu
 
-## 🎯 Phase 6: Polish & Deploy
+## 🎯 Block 6: Polish & Deploy
 
 - [ ] **Error handling** – lepšie error states
 - [ ] **Loading states** – skeleton loaders
-- [ ] **Performance** – optimalizácia
+- [ ] **Performance, CleanUp** – optimalizácia, SoC(komponenty, funkcie, valicacia)
 - [ ] **Deploy** – production ready
 
 ---
@@ -55,7 +55,7 @@
 - react-hook-form + Zod + react-hot-toast
 - Local Storage
 
-### **Enhanced (Phase 2+)**
+### **Enhanced (Block 2+)**
 
 - **Shadcn/ui** (moderné komponenty)
 - **Convex** (real-time backend)

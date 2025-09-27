@@ -71,13 +71,15 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
+import { CreateAnnouncementDialog } from "./CreateAnnouncementDialog";
 
 type Data = {
   _id: Id<"announcements">;
+  _creationTime: number;
   title: string;
-  publicationDate: string;
+  publishedAt?: string;
   lastUpdate: string;
-  categories: string;
+  categories: string[] | string; // Support both during migration
   status: boolean;
 };
 
@@ -90,7 +92,7 @@ export function DataTable() {
     []
   );
   const [sorting, setSorting] = React.useState<SortingState>([
-    { id: "publicationDate", desc: false },
+    { id: "_creationTime", desc: true },
   ]);
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
@@ -113,20 +115,19 @@ export function DataTable() {
     currentStatus: boolean
   ) => {
     try {
-      await updateAnnouncement({
+      const now = new Date().toISOString();
+      const updateData: any = {
         id: id as Id<"announcements">,
         status: !currentStatus,
-        lastUpdate: new Date()
-          .toLocaleString("en-US", {
-            month: "2-digit",
-            day: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false,
-          })
-          .replace(/(\d+)\/(\d+)\/(\d+), (\d+):(\d+)/, "$1/$2/$3 $4:$5"),
-      });
+        lastUpdate: now,
+      };
+
+      // If we're publishing (changing from false to true), set publishedAt to now
+      if (!currentStatus) {
+        updateData.publishedAt = now;
+      }
+
+      await updateAnnouncement(updateData);
     } catch (error) {
       console.error("Failed to update announcement status:", error);
       alert("Failed to update announcement status. Please try again.");
@@ -139,25 +140,69 @@ export function DataTable() {
       accessorKey: "title",
       header: "Title",
       cell: ({ row }: { row: Row<Data> }) => (
-        <div className="font-medium">{row.getValue("title")}</div>
+        <div className="font-bold">{row.getValue("title")}</div>
       ),
     },
     {
-      accessorKey: "publicationDate",
-      header: "Published",
+      accessorKey: "_creationTime",
+      header: "Created",
+      cell: ({ row }: { row: Row<Data> }) => (
+        <div className="text-sm">
+          {new Date(row.getValue("_creationTime")).toLocaleDateString()}
+        </div>
+      ),
     },
     {
-      accessorKey: "lastUpdate",
-      header: "Updated",
+      accessorKey: "publishedAt",
+      header: "Published",
+      cell: ({ row }: { row: Row<Data> }) => {
+        const publishedAt = row.getValue("publishedAt") as string | undefined;
+        const status = row.getValue("status") as boolean;
+        const creationTime = row.getValue("_creationTime") as number;
+
+        if (status) {
+          // If published, show publishedAt or fallback to creationTime
+          const displayTime = publishedAt
+            ? new Date(publishedAt).toLocaleString()
+            : new Date(creationTime).toLocaleString();
+          return <div className="text-sm text-green-600">{displayTime}</div>;
+        } else {
+          // If not published but scheduled
+          return (
+            <div className="text-sm text-orange-600">
+              {publishedAt
+                ? `Scheduled: ${new Date(publishedAt).toLocaleString()}`
+                : "Not scheduled"}
+            </div>
+          );
+        }
+      },
     },
     {
       accessorKey: "categories",
       header: "Categories",
-      cell: ({ row }: { row: Row<Data> }) => (
-        <Badge variant="secondary" className="text-xs">
-          {row.getValue("categories")}
-        </Badge>
-      ),
+      cell: ({ row }: { row: Row<Data> }) => {
+        const categoriesRaw = row.getValue("categories");
+        const categories = Array.isArray(categoriesRaw)
+          ? categoriesRaw
+          : typeof categoriesRaw === "string"
+          ? [categoriesRaw]
+          : [];
+        return (
+          <div className="flex flex-wrap gap-1">
+            {categories.slice(0, 2).map((category, index) => (
+              <Badge key={index} variant="secondary" className="text-xs">
+                {category}
+              </Badge>
+            ))}
+            {categories.length > 2 && (
+              <Badge variant="outline" className="text-xs">
+                +{categories.length - 2}
+              </Badge>
+            )}
+          </div>
+        );
+      },
     },
     {
       accessorKey: "status",
@@ -255,7 +300,8 @@ export function DataTable() {
     return announcements.map((item: any) => ({
       _id: item._id,
       title: item.title,
-      publicationDate: item.publicationDate,
+      _creationTime: item._creationTime,
+      publishedAt: item.publishedAt,
       lastUpdate: item.lastUpdate,
       categories: item.categories,
       status: item.status,
@@ -274,13 +320,13 @@ export function DataTable() {
 
   const table = useReactTable({
     data: filteredData,
-    columns,
+    columns: columns as any,
     state: {
       sorting,
       columnFilters,
       pagination,
     },
-    getRowId: (row) => row._id,
+    getRowId: (row: any) => row._id,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onPaginationChange: setPagination,
@@ -327,12 +373,14 @@ export function DataTable() {
 
           <div className="flex items-center space-x-2">
             <Select
-              value={sorting.length > 0 ? sorting[0].id : "publicationDate"}
+              value={sorting.length > 0 ? sorting[0].id : "_creationTime"}
               onValueChange={(value) => {
-                if (value === "publicationDate") {
-                  setSorting([{ id: "publicationDate", desc: false }]);
+                if (value === "_creationTime") {
+                  setSorting([{ id: "_creationTime", desc: true }]);
+                } else if (value === "publishedAt") {
+                  setSorting([{ id: "publishedAt", desc: true }]);
                 } else if (value === "lastUpdate") {
-                  setSorting([{ id: "lastUpdate", desc: false }]);
+                  setSorting([{ id: "lastUpdate", desc: true }]);
                 }
               }}
             >
@@ -340,17 +388,13 @@ export function DataTable() {
                 <SelectValue placeholder="Sort by..." />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="publicationDate">
-                  Publication Date
-                </SelectItem>
+                <SelectItem value="_creationTime">Created Date</SelectItem>
+                <SelectItem value="publishedAt">Published Date</SelectItem>
                 <SelectItem value="lastUpdate">Last Update</SelectItem>
               </SelectContent>
             </Select>
 
-            <Button variant="outline" size="sm">
-              <Plus />
-              <span className="hidden lg:inline">Add Announcement</span>
-            </Button>
+            <CreateAnnouncementDialog />
           </div>
         </div>
 
@@ -507,7 +551,7 @@ export function DataTableWithPreload({
     []
   );
   const [sorting, setSorting] = React.useState<SortingState>([
-    { id: "publicationDate", desc: false },
+    { id: "_creationTime", desc: true },
   ]);
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
@@ -530,20 +574,19 @@ export function DataTableWithPreload({
     currentStatus: boolean
   ) => {
     try {
-      await updateAnnouncement({
+      const now = new Date().toISOString();
+      const updateData: any = {
         id,
         status: !currentStatus,
-        lastUpdate: new Date()
-          .toLocaleString("en-US", {
-            month: "2-digit",
-            day: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false,
-          })
-          .replace(/(\d+)\/(\d+)\/(\d+), (\d+):(\d+)/, "$1/$2/$3 $4:$5"),
-      });
+        lastUpdate: now,
+      };
+
+      // If we're publishing (changing from false to true), set publishedAt to now
+      if (!currentStatus) {
+        updateData.publishedAt = now;
+      }
+
+      await updateAnnouncement(updateData);
     } catch (error) {
       console.error("Failed to update announcement status:", error);
       alert("Failed to update announcement status. Please try again.");
@@ -556,12 +599,43 @@ export function DataTableWithPreload({
       accessorKey: "title",
       header: "Title",
       cell: ({ row }: { row: Row<Data> }) => (
-        <div className="font-medium">{row.getValue("title")}</div>
+        <div className="font-semibold">{row.getValue("title")}</div>
       ),
     },
     {
-      accessorKey: "publicationDate",
+      accessorKey: "_creationTime",
+      header: "Created",
+      cell: ({ row }: { row: Row<Data> }) => (
+        <div className="text-sm">
+          {new Date(row.getValue("_creationTime")).toLocaleDateString()}
+        </div>
+      ),
+    },
+    {
+      accessorKey: "publishedAt",
       header: "Published",
+      cell: ({ row }: { row: Row<Data> }) => {
+        const publishedAt = row.getValue("publishedAt") as string | undefined;
+        const status = row.getValue("status") as boolean;
+        const creationTime = row.getValue("_creationTime") as number;
+
+        if (status) {
+          // If published, show publishedAt or fallback to creationTime
+          const displayTime = publishedAt
+            ? new Date(publishedAt).toLocaleString()
+            : new Date(creationTime).toLocaleString();
+          return <div className="text-sm text-green-600">{displayTime}</div>;
+        } else {
+          // If not published but scheduled
+          return (
+            <div className="text-sm text-orange-600">
+              {publishedAt
+                ? `Scheduled: ${new Date(publishedAt).toLocaleString()}`
+                : "Not scheduled"}
+            </div>
+          );
+        }
+      },
     },
     {
       accessorKey: "lastUpdate",
@@ -570,11 +644,28 @@ export function DataTableWithPreload({
     {
       accessorKey: "categories",
       header: "Categories",
-      cell: ({ row }: { row: Row<Data> }) => (
-        <Badge variant="secondary" className="text-xs">
-          {row.getValue("categories")}
-        </Badge>
-      ),
+      cell: ({ row }: { row: Row<Data> }) => {
+        const categoriesRaw = row.getValue("categories");
+        const categories = Array.isArray(categoriesRaw)
+          ? categoriesRaw
+          : typeof categoriesRaw === "string"
+          ? [categoriesRaw]
+          : [];
+        return (
+          <div className="flex flex-wrap gap-1">
+            {categories.slice(0, 2).map((category, index) => (
+              <Badge key={index} variant="secondary" className="text-xs">
+                {category}
+              </Badge>
+            ))}
+            {categories.length > 2 && (
+              <Badge variant="outline" className="text-xs">
+                +{categories.length - 2}
+              </Badge>
+            )}
+          </div>
+        );
+      },
     },
     {
       accessorKey: "status",
@@ -672,7 +763,8 @@ export function DataTableWithPreload({
     return announcements.map((item: any) => ({
       _id: item._id,
       title: item.title,
-      publicationDate: item.publicationDate,
+      _creationTime: item._creationTime,
+      publishedAt: item.publishedAt,
       lastUpdate: item.lastUpdate,
       categories: item.categories,
       status: item.status,
@@ -691,13 +783,13 @@ export function DataTableWithPreload({
 
   const table = useReactTable({
     data: filteredData,
-    columns,
+    columns: columns as any,
     state: {
       sorting,
       columnFilters,
       pagination,
     },
-    getRowId: (row) => row._id,
+    getRowId: (row: any) => row._id,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onPaginationChange: setPagination,
@@ -734,12 +826,14 @@ export function DataTableWithPreload({
 
           <div className="flex items-center space-x-2">
             <Select
-              value={sorting.length > 0 ? sorting[0].id : "publicationDate"}
+              value={sorting.length > 0 ? sorting[0].id : "_creationTime"}
               onValueChange={(value) => {
-                if (value === "publicationDate") {
-                  setSorting([{ id: "publicationDate", desc: false }]);
+                if (value === "_creationTime") {
+                  setSorting([{ id: "_creationTime", desc: true }]);
+                } else if (value === "publishedAt") {
+                  setSorting([{ id: "publishedAt", desc: true }]);
                 } else if (value === "lastUpdate") {
-                  setSorting([{ id: "lastUpdate", desc: false }]);
+                  setSorting([{ id: "lastUpdate", desc: true }]);
                 }
               }}
             >
@@ -747,29 +841,26 @@ export function DataTableWithPreload({
                 <SelectValue placeholder="Sort by..." />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="publicationDate">
-                  Publication Date
-                </SelectItem>
+                <SelectItem value="_creationTime">Created Date</SelectItem>
+                <SelectItem value="publishedAt">Published Date</SelectItem>
                 <SelectItem value="lastUpdate">Last Update</SelectItem>
               </SelectContent>
             </Select>
 
-            <Button variant="outline" size="sm">
-              <Plus />
-              <span className="hidden lg:inline">Add Announcement</span>
-            </Button>
+            {/* TODO: Add Create Announcement Dialog */}
+            <CreateAnnouncementDialog />
           </div>
         </div>
 
         <TabsContent value={activeTab} className="space-y-4">
-          <div className="rounded-md border">
+          <div className="rounded-md border p-2">
             <Table>
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {
                       return (
-                        <TableHead key={header.id}>
+                        <TableHead key={header.id} className="px-4 font-bold">
                           {header.isPlaceholder
                             ? null
                             : flexRender(
@@ -790,7 +881,7 @@ export function DataTableWithPreload({
                       data-state={row.getIsSelected() && "selected"}
                     >
                       {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
+                        <TableCell key={cell.id} className="px-4">
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext()

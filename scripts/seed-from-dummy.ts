@@ -80,8 +80,8 @@ async function run() {
   const items = mockAnnouncements.map((a) => ({
     title: a.title,
     content: a.content,
-    categories: normalizeCategory(a.categories[0]),
-    publicationDate: a.publicationDate,
+    categories: [normalizeCategory(a.categories[0])],
+    publishedAt: undefined, // Will be published immediately since status is true
     lastUpdate: a.lastUpdate,
     status: true,
   }));
