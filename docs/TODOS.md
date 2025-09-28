@@ -26,9 +26,9 @@
 
 ## 🎯 Block 4: CRUD Operations
 
-- [X] **Edit mode** – úprava existujúcich záznamov
+- [x] **Edit mode** – úprava existujúcich záznamov
 - [x] **Delete functionality** – s confirmation dialógom
-- [X] **Form improvements** – lepšie UX
+- [x] **Form improvements** – lepšie UX
 
 ## 🎯 Block 5: Sidebar & Navigation
 
@@ -39,10 +39,10 @@
 
 ## 🎯 Block 6: Polish & Deploy
 
-- [ ] **Error handling** – lepšie error states
-- [ ] **Loading states** – skeleton loaders
-- [ ] **Performance, CleanUp** – optimalizácia, SoC(komponenty, funkcie, valicacia)
-- [ ] **Deploy** – production ready
+- [x] **Error handling** – lepšie error states
+- [x] **Loading states** – skeleton loaders
+- [x] **Performance, CleanUp** – optimalizácia, SoC(komponenty, funkcie, valicacia)
+- [x] **Deploy** – production ready
 
 ---
 

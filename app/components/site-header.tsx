@@ -6,6 +6,7 @@ import { useLocation } from "react-router";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import type { Id } from "../../convex/_generated/dataModel";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function SiteHeader({ title }: { title: string }) {
   const location = useLocation();
@@ -43,6 +44,7 @@ export function SiteHeader({ title }: { title: string }) {
         />
         <h1 className="text-base font-bold capitalize">{displayTitle}</h1>
         <div className="ml-auto flex items-center gap-2">
+          <ThemeToggle />
           <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
             <a
               href="https://eodev.io"
