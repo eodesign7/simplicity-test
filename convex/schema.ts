@@ -14,7 +14,7 @@ export default defineSchema({
           v.literal("culture"),
           v.literal("discounts & benefits"),
           v.literal("emergencies"),
-          v.literal("fo seniors"),
+          v.literal("for seniors"),
           v.literal("health"),
           v.literal("kids & family")
         )
@@ -26,7 +26,7 @@ export default defineSchema({
         v.literal("culture"),
         v.literal("discounts & benefits"),
         v.literal("emergencies"),
-        v.literal("fo seniors"),
+        v.literal("for seniors"),
         v.literal("health"),
         v.literal("kids & family")
       )

@@ -23,9 +23,12 @@ export function DataTable() {
 
   if (!announcements) {
     return (
-      <div className="w-full space-y-4 p-6 flex items-center justify-center">
-        <div className="text-sm text-muted-foreground">
-          Loading announcements...
+      <div className="w-full space-y-4 p-6 flex items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center gap-3">
+          <div className="animate-spin rounded-full border-2 border-gray-300 border-t-blue-600 h-8 w-8" />
+          <div className="text-sm text-muted-foreground">
+            Loading announcements...
+          </div>
         </div>
       </div>
     );

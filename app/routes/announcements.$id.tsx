@@ -37,7 +37,6 @@ import {
 } from "../components/ui/multi-select";
 import {
   generateTimeOptions,
-  combineDateAndTime,
   parseDateTime,
   formatDateForInput,
 } from "../../lib/datetime-utils";
@@ -46,6 +45,10 @@ import {
   type UpdateAnnouncementFormData,
 } from "../../lib/validation";
 import { ANNOUNCEMENT_CATEGORIES } from "../../lib/constants";
+import {
+  createValidationData,
+  createUpdateData,
+} from "../hooks/use-form-helpers";
 import { toast } from "sonner";
 import { Trash2, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import * as React from "react";
@@ -152,15 +155,7 @@ export default function AnnouncementDetail() {
     setErrors({});
 
     // Validation using schema
-    const validationData = {
-      title: formData.title.trim(),
-      content: formData.content.trim(),
-      categories: formData.categories,
-      publishDate: formData.publishDate,
-      publishTime: formData.publishTime,
-      status: formData.status,
-    };
-
+    const validationData = createValidationData(formData);
     const validationErrors = validateUpdateForm(
       validationData,
       announcement.status,
@@ -174,29 +169,7 @@ export default function AnnouncementDetail() {
     }
 
     try {
-      const now = new Date().toISOString();
-      const publishDateTime = combineDateAndTime(
-        formData.publishDate,
-        formData.publishTime
-      );
-
-      const updateData: any = {
-        id: announcement._id,
-        title: formData.title.trim(),
-        content: formData.content.trim(),
-        categories: formData.categories as any,
-        lastUpdate: now,
-        status: formData.status,
-      };
-
-      // Handle publishedAt logic
-      if (formData.status) {
-        // If publishing immediately, set publishedAt to now
-        updateData.publishedAt = now;
-      } else {
-        // If scheduling for later, use the scheduled time
-        updateData.publishedAt = publishDateTime;
-      }
+      const updateData = createUpdateData(formData, announcement._id);
 
       await updateAnnouncement(updateData);
 

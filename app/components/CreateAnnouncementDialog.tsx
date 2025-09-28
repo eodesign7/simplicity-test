@@ -25,7 +25,6 @@ import { FormField } from "./ui/FormField";
 import { Plus } from "lucide-react";
 import {
   generateTimeOptions,
-  combineDateAndTime,
   roundToNearestQuarter,
   formatDateForInput,
   formatTimeForInput,
@@ -36,6 +35,10 @@ import {
   type CreateAnnouncementFormData,
 } from "../../lib/validation";
 import { ANNOUNCEMENT_CATEGORIES } from "../../lib/constants";
+import {
+  createValidationData,
+  createNewAnnouncementData,
+} from "../hooks/use-form-helpers";
 import { toast } from "sonner";
 
 interface CreateAnnouncementDialogProps {
@@ -81,15 +84,7 @@ export function CreateAnnouncementDialog({
     setErrors({});
 
     // Validation using schema
-    const validationData = {
-      title: formData.title.trim(),
-      content: formData.content.trim(),
-      categories: formData.categories,
-      publishDate: formData.publishDate,
-      publishTime: formData.publishTime,
-      status: formData.status,
-    };
-
+    const validationData = createValidationData(formData);
     const validationErrors = validateSchema(
       createAnnouncementSchema,
       validationData
@@ -102,28 +97,7 @@ export function CreateAnnouncementDialog({
     }
 
     try {
-      const now = new Date().toISOString();
-      const publishDateTime = combineDateAndTime(
-        formData.publishDate,
-        formData.publishTime
-      );
-
-      const createData: any = {
-        title: formData.title.trim(),
-        content: formData.content.trim(),
-        categories: formData.categories as any,
-        lastUpdate: now,
-        status: formData.status,
-      };
-
-      // Handle publishedAt logic
-      if (formData.status) {
-        // If publishing immediately, set publishedAt to now
-        createData.publishedAt = now;
-      } else {
-        // If scheduling for later, use the scheduled time
-        createData.publishedAt = publishDateTime;
-      }
+      const createData = createNewAnnouncementData(formData);
 
       await createAnnouncement(createData);
 

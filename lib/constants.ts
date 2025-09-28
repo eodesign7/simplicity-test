@@ -8,7 +8,7 @@ export const ANNOUNCEMENT_CATEGORIES: MultiSelectOption[] = [
   { value: "culture", label: "Culture" },
   { value: "discounts & benefits", label: "Discounts & Benefits" },
   { value: "emergencies", label: "Emergencies" },
-  { value: "fo seniors", label: "For Seniors" },
+  { value: "for seniors", label: "For Seniors" },
   { value: "health", label: "Health" },
   { value: "kids & family", label: "Kids & Family" },
 ];
