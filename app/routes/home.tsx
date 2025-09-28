@@ -12,22 +12,22 @@ import { Badge } from "@/components/ui/badge";
 import {
   CheckCircle,
   Rocket,
-  Code,
   Database,
   Globe,
   Github,
   Zap,
   Shield,
   Trophy,
+  ChevronRight,
+  Settings,
 } from "lucide-react";
-import { Link } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Announcements Dashboard" },
+    { title: "Welcome | Test Assignment" },
     {
       name: "description",
-      content: "Simple announcements management dashboard",
+      content: "Welcome to the Test Assignment",
     },
   ];
 }
@@ -35,28 +35,29 @@ export function meta({}: Route.MetaArgs) {
 export default function Home() {
   return (
     <Layout>
-      <div className="p-8 max-w-7xl mx-auto">
+      <div className="p-8 max-w-7xl">
         {/* Hero Section */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <Trophy className="h-12 w-12 text-yellow-500" />
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <div className="mb-12">
+          <div className="flex gap-3 mb-6">
+            <h1 className="text-5xl font-black text-neutral-800">
               Test Assignment
             </h1>
-            <Rocket className="h-12 w-12 text-blue-500" />
           </div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Moderný announcement management systém postavený s najnovšími
-            technológiami. Od jednoduchej verzie po enterprise-ready riešenie.
+          <p className="text-md text-neutral-600 max-w-4xl  mb-8">
+            Testovacie zadanie som spracoval v dvoch úrovniach – základnej
+            one-to-one implementácii, ktorá presne zodpovedá pôvodnému Figma
+            návrhu, a v rozšírenej enhanced verzii, kde som zadanie posunul
+            ďalej a pridal moderné UI komponenty, plnohodnotné CRUD operácie a
+            enterprise-ready architektúru. Okrem vizuálnej vernosti som sa
+            sústredil na čistý kód, typovú bezpečnosť a reálne použiteľné
+            riešenia – od mock dát a validácie formulárov cez real-time databázu
+            a cron joby až po pokročilý filtering, triedenie, stránkovanie a
+            vyhľadávanie. Celé riešenie je postavené na modernom stacku (React
+            Router v7, TypeScript, Shadcn/ui, TailwindCSS, Convex) a dodržuje
+            best practices pre udržateľný vývoj.
           </p>
-          <div className="flex items-center justify-center gap-4">
-            <Link to="/announcements">
-              <Button size="lg" className="gap-2">
-                <Database className="h-5 w-5" />
-                Zobraziť Announcements
-              </Button>
-            </Link>
-            <Button variant="outline" size="lg" className="gap-2" asChild>
+          <div className="flex gap-4">
+            <Button variant="secondary" size="lg" className="gap-2" asChild>
               <a
                 href="https://github.com/eodesign7/simplicity-test"
                 target="_blank"
@@ -66,85 +67,88 @@ export default function Home() {
                 Source Code
               </a>
             </Button>
+            <Button variant="default" size="lg" className="gap-2" asChild>
+              <a
+                href="https://simplicity-test.onrender.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                One-to-One
+                <ChevronRight className="h-5 w-5" />
+              </a>
+            </Button>
           </div>
         </div>
 
         {/* Project Status Cards */}
         <div className="grid md:grid-cols-2 gap-6 mb-12">
-          <Card className="border-green-200 bg-green-50">
+          <Card className="border-neutral-100 bg-neutral-50/50">
             <CardHeader>
               <div className="flex items-center gap-3">
-                <CheckCircle className="h-8 w-8 text-green-600" />
+                <CheckCircle className="h-5 w-5 text-lime-600" />
                 <div>
-                  <CardTitle className="text-green-800">
-                    Phase 1: One-to-One
+                  <CardTitle className="text-neutral-800 text-xl">
+                    one-to-one
                   </CardTitle>
-                  <Badge
-                    variant="secondary"
-                    className="bg-green-100 text-green-700"
-                  >
-                    COMPLETED
-                  </Badge>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
-              <CardDescription className="text-green-700 mb-4">
-                Základná implementácia podľa testovacieho zadania
+              <CardDescription className="text-neutral-700 mb-4">
+                Základná implementácia podľa testovacieho zadania 1:1
               </CardDescription>
-              <ul className="space-y-2 text-sm text-green-600">
+              <ul className="space-y-2 text-sm text-neutral-600">
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4" />
-                  Tabuľka oznamov s Convex backend
+                  <CheckCircle className="h-4 w-4 text-lime-600" />
+                  Tabuľka oznamov: Mock Data + LocalStorage
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4" />
+                  <CheckCircle className="h-4 w-4 text-lime-600" />
                   Form validácia s Zod
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4" />
+                  <CheckCircle className="h-4 w-4 text-lime-600" />
                   CRUD operácie
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4" />
+                  <CheckCircle className="h-4 w-4 text-lime-600" />
                   Toast notifikácie
                 </li>
               </ul>
             </CardContent>
           </Card>
 
-          <Card className="border-blue-200 bg-blue-50">
+          <Card className="border-neutral-100 bg-neutral-50/50">
             <CardHeader>
               <div className="flex items-center gap-3">
-                <Trophy className="h-8 w-8 text-blue-600" />
+                <Trophy className="h-5 w-5 text-sky-600" />
                 <div>
-                  <CardTitle className="text-blue-800">
-                    Phase 2: Enhanced
+                  <CardTitle className="text-neutral-800 text-xl">
+                    Enhanced
                   </CardTitle>
-                  <Badge className="bg-blue-100 text-blue-700">COMPLETED</Badge>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
-              <CardDescription className="text-blue-700 mb-4">
-                Enterprise-ready rozšírenie s modernými technológiami
+              <CardDescription className="text-neutral-700 mb-4">
+                Rozšírenie o moderné UI komponenty a plnohodnotné CRUD operácie
               </CardDescription>
-              <ul className="space-y-2 text-sm text-blue-600">
+              <ul className="space-y-2 text-sm text-neutral-600">
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4" />
-                  Shadcn/ui komponenty
+                  <CheckCircle className="h-4 w-4 text-sky-600" />
+                  Shadcn/ui komponenty + Blocks
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4" />
-                  Plnohodnotné CRUD + real-time
+                  <CheckCircle className="h-4 w-4 text-sky-600" />
+                  Plnohodnotné CRUD + RT Database + preloadedQueries
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4" />
-                  Advanced filtering & sorting
+                  <CheckCircle className="h-4 w-4 text-sky-600" />
+                  Advanced filtering, sorting, pagination and search
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4" />
-                  Error boundaries & performance
+                  <CheckCircle className="h-4 w-4 text-sky-600" />
+                  Scheduled Publish using Cron Jobs
                 </li>
               </ul>
             </CardContent>
@@ -155,8 +159,8 @@ export default function Home() {
         <Card className="mb-12">
           <CardHeader>
             <div className="flex items-center gap-3">
-              <Code className="h-8 w-8 text-purple-600" />
-              <CardTitle className="text-2xl">
+              <Settings className="h-5 w-5 text-neutral-600" />
+              <CardTitle className="text-xl text-neutral-800">
                 Tech Stack & Architecture
               </CardTitle>
             </div>
@@ -206,7 +210,7 @@ export default function Home() {
                     Type-safe API
                   </Badge>
                   <Badge variant="outline" className="mr-2">
-                    Auto-scaling
+                    Cron Jobs
                   </Badge>
                 </div>
               </div>

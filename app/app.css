@@ -1,34 +1,32 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
+/* 🎨 Hlavné farby, radius, fonty */
 @theme {
   --color-light-gray: #fafafa;
   --color-light-yellow: #fff7d1;
-  --color-primary: #ffb64a;
+  --color-primary: #ff6900; /* prispôsobené podľa tweak-cn */
   --font-sans: "Lato", ui-sans-serif, system-ui, sans-serif;
 }
 
-html,
-body {
-  @apply bg-white dark:bg-gray-950;
-
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
+html {
+  color-scheme: light;
 }
 
-/* Hide scrollbar for dropdown */
+body {
+  @apply bg-background text-foreground;
+}
+
+/* 🔒 Skrytie scrollbarov pre dropdown */
 .scrollbar-hide {
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  -ms-overflow-style: none; /* IE 10+ */
   scrollbar-width: none; /* Firefox */
 }
 .scrollbar-hide::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+  display: none; /* Safari a Chrome */
 }
 
-/* Skeleton animation */
+/* ⏳ Skeleton loading animácia */
 @keyframes pulse {
   0%,
   100% {
@@ -38,16 +36,17 @@ body {
     opacity: 0.5;
   }
 }
-
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* 🖌️ Prepojenie Tailwind farieb na CSS variables */
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -63,6 +62,7 @@ body {
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -94,6 +94,7 @@ body {
   --shadow-2xl: var(--shadow-2xl);
 }
 
+/* 🌞 Svetlý režim */
 :root {
   --background: #ffffff;
   --foreground: #333333;
@@ -107,79 +108,26 @@ body {
   --secondary-foreground: #4b5563;
   --muted: #f9fafb;
   --muted-foreground: #6b7280;
-  --accent: #e0f2fe;
-  --accent-foreground: #1e3a8a;
+  --accent: #fff3e0;
+  --accent-foreground: #cc5500;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
   --border: #e5e7eb;
   --input: #e5e7eb;
-  --ring: #3b82f6;
-  --chart-1: #3b82f6;
-  --chart-2: #2563eb;
-  --chart-3: #1d4ed8;
-  --chart-4: #1e40af;
-  --chart-5: #1e3a8a;
+  --ring: #ff6900;
+  --chart-1: #ff6900;
+  --chart-2: #ff8533;
+  --chart-3: #ff9f66;
+  --chart-4: #ffb999;
+  --chart-5: #ffd3cc;
   --sidebar: #f9fafb;
   --sidebar-foreground: #333333;
-  --sidebar-primary: #3b82f6;
+  --sidebar-primary: #ff6900;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e0f2fe;
-  --sidebar-accent-foreground: #1e3a8a;
+  --sidebar-accent: #fff3e0;
+  --sidebar-accent-foreground: #cc5500;
   --sidebar-border: #e5e7eb;
-  --sidebar-ring: #3b82f6;
-  --font-sans: Lato, ui-sans-serif, sans-serif, system-ui;
-  --font-serif: Source Serif 4, serif;
-  --font-mono: JetBrains Mono, monospace;
-  --radius: 0.375rem;
-  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
-    0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
-    0 2px 4px -1px hsl(0 0% 0% / 0.1);
-  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
-    0 4px 6px -1px hsl(0 0% 0% / 0.1);
-  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
-    0 8px 10px -1px hsl(0 0% 0% / 0.1);
-  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
-  --tracking-normal: 0em;
-  --spacing: 0.25rem;
-}
-
-.dark {
-  --background: #171717;
-  --foreground: #e5e5e5;
-  --card: #262626;
-  --card-foreground: #e5e5e5;
-  --popover: #262626;
-  --popover-foreground: #e5e5e5;
-  --primary: #3b82f6;
-  --primary-foreground: #ffffff;
-  --secondary: #262626;
-  --secondary-foreground: #e5e5e5;
-  --muted: #262626;
-  --muted-foreground: #a3a3a3;
-  --accent: #1e3a8a;
-  --accent-foreground: #bfdbfe;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #404040;
-  --input: #404040;
-  --ring: #3b82f6;
-  --chart-1: #60a5fa;
-  --chart-2: #3b82f6;
-  --chart-3: #2563eb;
-  --chart-4: #1d4ed8;
-  --chart-5: #1e40af;
-  --sidebar: #171717;
-  --sidebar-foreground: #e5e5e5;
-  --sidebar-primary: #3b82f6;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1e3a8a;
-  --sidebar-accent-foreground: #bfdbfe;
-  --sidebar-border: #404040;
-  --sidebar-ring: #3b82f6;
+  --sidebar-ring: #ff6900;
   --font-sans: Lato, ui-sans-serif, sans-serif, system-ui;
   --font-serif: Source Serif 4, serif;
   --font-mono: JetBrains Mono, monospace;
@@ -198,6 +146,7 @@ body {
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 }
 
+/* 🧩 Base layer pre Tailwind */
 @layer base {
   * {
     @apply border-border outline-ring/50;
