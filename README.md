@@ -22,7 +22,7 @@ Striktne podľa testovacieho zadania:
 - Custom UI komponenty
 - Toast notifikácie
 
-### 🚀 **Phase 2: Enhanced (IN PROGRESS)**
+### 🚀 **Phase 2: Enhanced (COMPLETED)**
 
 Rozšírená verzia s modernými komponentmi:
 
@@ -65,6 +65,15 @@ pnpm dev
 ```
 
 Aplikácia bude dostupná na `http://localhost:5173`
+
+## 📦 Deploy to Vercel
+
+Pre deployment na Vercel:
+
+1. **Pripoj GitHub repo** k Vercel
+2. **Nastav environment variables**:
+   - `VITE_CONVEX_URL`: URL tvojho Convex deployment
+3. **Deploy** automaticky spustí build a deploy
 
 ## 💾 Data Persistence
 

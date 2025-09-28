@@ -30,19 +30,13 @@ import {
   formatDateForInput,
   formatTimeForInput,
 } from "../../lib/datetime-utils";
+import {
+  createAnnouncementSchema,
+  validateSchema,
+  type CreateAnnouncementFormData,
+} from "../../lib/validation";
+import { ANNOUNCEMENT_CATEGORIES } from "../../lib/constants";
 import { toast } from "sonner";
-
-const categories: MultiSelectOption[] = [
-  { value: "city", label: "City" },
-  { value: "community events", label: "Community Events" },
-  { value: "crime & safety", label: "Crime & Safety" },
-  { value: "culture", label: "Culture" },
-  { value: "discounts & benefits", label: "Discounts & Benefits" },
-  { value: "emergencies", label: "Emergencies" },
-  { value: "fo seniors", label: "For Seniors" },
-  { value: "health", label: "Health" },
-  { value: "kids & family", label: "Kids & Family" },
-];
 
 interface CreateAnnouncementDialogProps {
   children?: React.ReactNode;
@@ -56,6 +50,9 @@ export function CreateAnnouncementDialog({
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   const createAnnouncement = useMutation(api.announcements.create);
+
+  // Memoize time options to avoid regenerating on every render
+  const timeOptions = React.useMemo(() => generateTimeOptions(), []);
 
   const [formData, setFormData] = React.useState({
     title: "",
@@ -83,19 +80,23 @@ export function CreateAnnouncementDialog({
     setIsLoading(true);
     setErrors({});
 
-    // Validation
-    const newErrors: Record<string, string> = {};
-    if (!formData.title.trim()) newErrors.title = "Title is required";
-    if (!formData.content.trim()) newErrors.content = "Content is required";
-    if (formData.categories.length === 0)
-      newErrors.categories = "At least one category is required";
-    if (!formData.publishDate)
-      newErrors.publishDate = "Publish date is required";
-    if (!formData.publishTime)
-      newErrors.publishTime = "Publish time is required";
+    // Validation using schema
+    const validationData = {
+      title: formData.title.trim(),
+      content: formData.content.trim(),
+      categories: formData.categories,
+      publishDate: formData.publishDate,
+      publishTime: formData.publishTime,
+      status: formData.status,
+    };
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
+    const validationErrors = validateSchema(
+      createAnnouncementSchema,
+      validationData
+    );
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       setIsLoading(false);
       return;
     }
@@ -159,7 +160,7 @@ export function CreateAnnouncementDialog({
     }
   };
 
-  const timeOptions = generateTimeOptions();
+  // timeOptions already memoized above
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -202,7 +203,7 @@ export function CreateAnnouncementDialog({
 
           <FormField label="Categories" error={errors.categories}>
             <MultiSelect
-              options={categories}
+              options={ANNOUNCEMENT_CATEGORIES}
               selected={formData.categories}
               onChange={(selected) => handleInputChange("categories", selected)}
               placeholder="Select categories..."

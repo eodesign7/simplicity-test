@@ -41,21 +41,14 @@ import {
   parseDateTime,
   formatDateForInput,
 } from "../../lib/datetime-utils";
+import {
+  validateUpdateForm,
+  type UpdateAnnouncementFormData,
+} from "../../lib/validation";
+import { ANNOUNCEMENT_CATEGORIES } from "../../lib/constants";
 import { toast } from "sonner";
 import { Trash2, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import * as React from "react";
-
-const categories: MultiSelectOption[] = [
-  { value: "city", label: "City" },
-  { value: "community events", label: "Community Events" },
-  { value: "crime & safety", label: "Crime & Safety" },
-  { value: "culture", label: "Culture" },
-  { value: "discounts & benefits", label: "Discounts & Benefits" },
-  { value: "emergencies", label: "Emergencies" },
-  { value: "fo seniors", label: "For Seniors" },
-  { value: "health", label: "Health" },
-  { value: "kids & family", label: "Kids & Family" },
-];
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -79,6 +72,9 @@ export default function AnnouncementDetail() {
     api.announcements.getById,
     !isNewAnnouncement && id ? { id: id as Id<"announcements"> } : "skip"
   );
+
+  // Memoize time options to avoid regenerating on every render
+  const timeOptions = React.useMemo(() => generateTimeOptions(), []);
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [errors, setErrors] = React.useState<Record<string, string>>({});
@@ -155,23 +151,24 @@ export default function AnnouncementDetail() {
     setIsLoading(true);
     setErrors({});
 
-    // Validation
-    const newErrors: Record<string, string> = {};
-    if (!formData.title.trim()) newErrors.title = "Title is required";
-    if (!formData.content.trim()) newErrors.content = "Content is required";
-    if (formData.categories.length === 0)
-      newErrors.categories = "At least one category is required";
+    // Validation using schema
+    const validationData = {
+      title: formData.title.trim(),
+      content: formData.content.trim(),
+      categories: formData.categories,
+      publishDate: formData.publishDate,
+      publishTime: formData.publishTime,
+      status: formData.status,
+    };
 
-    // Only validate publish date/time for non-published announcements
-    if (!announcement.status && !formData.status) {
-      if (!formData.publishDate)
-        newErrors.publishDate = "Publish date is required";
-      if (!formData.publishTime)
-        newErrors.publishTime = "Publish time is required";
-    }
+    const validationErrors = validateUpdateForm(
+      validationData,
+      announcement.status,
+      formData.status
+    );
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       setIsLoading(false);
       return;
     }
@@ -366,7 +363,7 @@ export default function AnnouncementDetail() {
     }
   };
 
-  const timeOptions = generateTimeOptions();
+  // timeOptions already memoized above
 
   if (!isNewAnnouncement && !announcement) {
     return (
@@ -438,7 +435,7 @@ export default function AnnouncementDetail() {
 
             <FormField label="Categories" error={errors.categories}>
               <MultiSelect
-                options={categories}
+                options={ANNOUNCEMENT_CATEGORIES}
                 selected={formData.categories}
                 onChange={(selected) =>
                   handleInputChange("categories", selected)

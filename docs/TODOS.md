@@ -26,9 +26,9 @@
 
 ## 🎯 Block 4: CRUD Operations
 
-- [ ] **Edit mode** – úprava existujúcich záznamov
+- [X] **Edit mode** – úprava existujúcich záznamov
 - [x] **Delete functionality** – s confirmation dialógom
-- [ ] **Form improvements** – lepšie UX
+- [X] **Form improvements** – lepšie UX
 
 ## 🎯 Block 5: Sidebar & Navigation
 
